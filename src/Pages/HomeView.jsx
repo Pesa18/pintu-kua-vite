@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import Framework7 from "framework7/lite/bundle";
 import Framework7React from "framework7-react";
 import { f7, f7ready, App, View, Toolbar, Link } from "framework7-react";
