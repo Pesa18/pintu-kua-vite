@@ -69,8 +69,11 @@ const FormLogin = () => {
           LogIn({
             token: response.data.token,
             tokenType: "Bearer",
+            expiresIn: 36000,
             authState: { token: response.data.token },
           });
+
+          history("/");
         } catch (error) {
           throw error;
         }

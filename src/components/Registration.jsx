@@ -12,6 +12,7 @@ import {
 import { TbShieldLock } from "react-icons/tb";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import axios from "axios";
 const FormRegistration = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const FormRegistration = () => {
         "Email harus memiliki domain yang valid"
       )
       .required("email harus diisi"),
-    nama: Yup.string().required("Nama wajib diisi"),
+    name: Yup.string().required("Nama wajib diisi"),
     nik: Yup.string()
       .matches(/^\d{16}$/, "Number must be exactly 16 digits")
       .required("NIK wajib diisi"),
@@ -46,13 +47,35 @@ const FormRegistration = () => {
   const formik = useFormik({
     initialValues: {
       email: variable,
-      nama: "",
+      name: "",
       no_telp: "",
       nik: "",
       password: "",
     },
     validationSchema: skemaValidasi,
-    onSubmit: (values) => {},
+    onSubmit: async (values) => {
+      try {
+        const response = await axios.post(
+          "http://apibimas.test/api/register",
+          {
+            values,
+          },
+          {
+            headers: {
+              accept: "application/json",
+              Authenticated: 123124542354235,
+            },
+          }
+        );
+
+        if (!response.success) {
+          formik.setErrors({
+            nik: "NIK sudah terdaftar",
+          });
+        } else {
+        }
+      } catch (error) {}
+    },
   });
   useEffect(() => {
     if (!variable) {
@@ -103,17 +126,17 @@ const FormRegistration = () => {
                 onChange={(e) => {
                   formik.handleChange(e);
                 }}
-                value={formik.values.nama}
+                value={formik.values.name}
                 type="text"
-                name="nama"
-                id="nama"
+                name="name"
+                id="name"
                 className="   border-[2px] border-second invalid:focus:border-pink-800  dark:text-light bg-light bg-opacity-10 w-full text-third placeholder:text-light -ml-10 -mr-10  pl-10 pr-3 py-1 rounded-lg outline-none  focus:border-primary placeholder:text-sm "
                 placeholder="Nama sesuai KTP"
               />
             </div>
-            {formik.errors.nama && formik.touched.nama && (
+            {formik.errors.name && formik.touched.name && (
               <div className="text-xs px-1 mt-1 text-pink-800 dark:text-pink-500">
-                {formik.errors.nama} !
+                {formik.errors.name} !
               </div>
             )}
           </div>
