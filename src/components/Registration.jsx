@@ -12,6 +12,7 @@ import {
 import { TbShieldLock } from "react-icons/tb";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import { toast } from "react-toastify";
 import axios from "axios";
 const FormRegistration = () => {
   const location = useLocation();
@@ -68,13 +69,15 @@ const FormRegistration = () => {
           }
         );
 
-        if (!response.success) {
-          formik.setErrors({
-            nik: "NIK sudah terdaftar",
-          });
-        } else {
-        }
-      } catch (error) {}
+        navigate(`/auth/otp/${response.data.data.uuid}`, {
+          state: {
+            email: response.data.data.email,
+            token: response.data.data.token,
+          },
+        });
+      } catch (error) {
+        toast.error("Terjadi kesalahan Verifikasi");
+      }
     },
   });
   useEffect(() => {

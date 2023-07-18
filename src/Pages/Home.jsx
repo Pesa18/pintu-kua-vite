@@ -4,8 +4,16 @@ import { TbBell } from "react-icons/tb";
 import { ShalatCard } from "../components/shalatCard";
 import { MenuHome } from "../components/menuHome";
 import { InfoGraph } from "../components/info";
+import { useSignOut } from "react-auth-kit";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  const signOut = useSignOut();
+  const navigate = useNavigate();
+  function signOutApp() {
+    signOut();
+    navigate("/");
+  }
   const sheet = useRef(null);
   const onPageBeforeOut = () => {
     // Close opened sheets on page out
@@ -45,7 +53,7 @@ const HomePage = () => {
           </div>
         </NavLeft>
         <NavRight textColor="white" className="pr-3">
-          <TbBell className="text-xl" />
+          <TbBell className="text-xl" onClick={signOutApp()} />
         </NavRight>
       </Navbar>
       <div className="h-60   px-3">

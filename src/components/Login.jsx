@@ -52,11 +52,13 @@ const FormLogin = () => {
       setOnVerification(true);
       if (isLogin) {
         let email = values.email;
+        let password = values.password;
         try {
           const response = await axios.post(
             "http://apibimas.test/api/login",
             {
               email,
+              password,
             },
             {
               headers: {
@@ -65,15 +67,25 @@ const FormLogin = () => {
               },
             }
           );
+          if (!response.data.login) {
+            if (!response.data.verified) {
+              history(`/auth/otp/${response.data.uuid}`, {
+                state: {
+                  email: response.data.email,
+                  token: response.data.token,
+                },
+              });
+            }
+          } else {
+            LogIn({
+              token: response.data.token,
+              tokenType: "Bearer",
+              expiresIn: 36000,
+              authState: { token: response.data.token },
+            });
 
-          LogIn({
-            token: response.data.token,
-            tokenType: "Bearer",
-            expiresIn: 36000,
-            authState: { token: response.data.token },
-          });
-
-          history("/");
+            history("/");
+          }
         } catch (error) {
           throw error;
         }

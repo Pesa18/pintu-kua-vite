@@ -3,6 +3,7 @@ import Auth from "./Auth";
 import FormLogin from "./components/Login";
 import FormRegistration from "./components/Registration";
 import HomeView from "./Pages/HomeView";
+import OtpPages from "./Pages/Otp";
 import { RequireAuth } from "react-auth-kit";
 
 const RouteComponent = () => {
@@ -20,6 +21,7 @@ const RouteComponent = () => {
         <Route index element={<FormLogin />}></Route>
         <Route path="daftar" element={<FormRegistration />}></Route>
       </Route>
+      <Route path="/otp/" element={<OtpPages />} />
     </Routes>
   );
 };
