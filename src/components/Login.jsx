@@ -67,16 +67,7 @@ const FormLogin = () => {
               },
             }
           );
-          if (!response.data.login) {
-            if (!response.data.verified) {
-              history(`/auth/otp/${response.data.uuid}`, {
-                state: {
-                  email: response.data.email,
-                  token: response.data.token,
-                },
-              });
-            }
-          } else {
+          if (response.data.login) {
             LogIn({
               token: response.data.token,
               tokenType: "Bearer",
@@ -84,7 +75,18 @@ const FormLogin = () => {
               authState: { token: response.data.token },
             });
 
-            history("/");
+            history(`/${response.data.uuid}`);
+          } else {
+            if (response.data.verified) {
+              return history(`/auth/otp/${response.data.uuid}`, {
+                state: {
+                  email: response.data.email,
+                  token: response.data.token,
+                },
+              });
+            }
+            setOnVerification(false);
+            formik.setErrors({ password: "Password Salah" });
           }
         } catch (error) {
           throw error;
@@ -97,8 +99,7 @@ const FormLogin = () => {
           if (!value.status) {
             return (
               setOnVerification(false),
-              toast.error("Terjadi Kesalahan Verifikasi"),
-              console.error("Login gagal")
+              toast.error("Terjadi Kesalahan Verifikasi")
             );
           }
           return value.data ? setLogin(true) : setRegistrasi(true);
@@ -108,15 +109,19 @@ const FormLogin = () => {
   });
 
   useEffect(() => {
-    window.google.accounts.id.initialize({
-      client_id:
-        "704486977216-u3fuh411b8e47970d0o4ntij3db89l2d.apps.googleusercontent.com",
-      callback: handleCallback,
-    });
-    window.google.accounts.id.renderButton(
-      document.getElementById("signinDiv"),
-      { theme: "outline", size: "large" }
-    );
+    try {
+      window.google.accounts.id.initialize({
+        client_id:
+          "704486977216-u3fuh411b8e47970d0o4ntij3db89l2d.apps.googleusercontent.com",
+        callback: handleCallback,
+      });
+      window.google.accounts.id.renderButton(
+        document.getElementById("signinDiv"),
+        { theme: "outline", size: "large" }
+      );
+    } catch (error) {
+      return null;
+    }
   }, []);
 
   return (

@@ -4,49 +4,15 @@ import { TbVolume } from "react-icons/tb";
 import { SkeletonBlock, Toggle, ListItem } from "framework7-react";
 import { jamUTC } from "../helper/dateHelper";
 import { LocationApp } from "./locationApp";
+import Countdown from "react-countdown";
 import axios from "axios";
 
 const PrayerTime = () => {
-  const [countdown, setCountdown] = useState("");
   const [nextPrayer, setNextPrayer] = useState("");
   const [skeleton, setSkeleton] = useState(false);
   const [loadShalat, setLoadShalat] = useState(false);
   const [targetDate, setTargetDate] = useState("");
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date().getTime();
-
-      const distance = targetDate - now;
-      // Menghitung sisa waktu dalam hari, jam, menit, dan detik
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = String(
-        Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-      ).padStart(2, "0");
-      const minutes = String(
-        Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
-      ).padStart(2, "0");
-      const seconds = String(
-        Math.floor((distance % (1000 * 60)) / 1000)
-      ).padStart(2, "0");
-
-      // Menggabungkan hasil perhitungan menjadi satu string
-      const countdownString = hours + ":" + minutes + ":" + seconds;
-      setCountdown(countdownString);
-
-      // Menghentikan interval saat targetDate telah tercapai
-      if (distance <= 0) {
-        clearInterval(interval);
-        setCountdown(false);
-        setLoadShalat(true);
-      }
-    }, 1000);
-
-    // Membersihkan interval saat komponen tidak lagi digunakan
-    return () => {
-      clearInterval(interval);
-    };
-  }, [targetDate]);
+  const [prayerTimes, setPrayerTimes] = useState("");
 
   useEffect(() => {
     const currentDate = new Date();
@@ -64,18 +30,15 @@ const PrayerTime = () => {
           `https://api.myquran.com/v1/sholat/jadwal/${kodeKab}/${year}/${month}/${day}`
         );
         const data = response.data.data;
-        const currentTime = new Date(); // Waktu sekarang
-        const currentHour = currentTime.getHours();
-        const currentMinute = currentTime.getMinutes();
 
         // Membuat daftar waktu shalat dalam urutan dari awal hari hingga akhir hari
-        // const prayerTimes = [
-        //   { name: "Dzuhur", time: "08:51" },
-        //   { name: "Ashar", time: "08:52" },
-        //   { name: "Isya", time: "08:53" },
-        //   { name: "Subuh", time: "04:20" },
+        // const waktuShalat = [
+        //   { name: "Dzuhur", time: "00:06" },
+        //   { name: "Ashar", time: "00:07" },
+        //   { name: "Isya", time: "00:08" },
+        //   { name: "Subuh", time: "02:01" },
         // ];
-        const prayerTimes = [
+        const waktuShalat = [
           { name: "Imsak", time: data.jadwal.imsak },
           { name: "Subuh", time: data.jadwal.subuh },
           { name: "Terbit", time: data.jadwal.terbit },
@@ -86,48 +49,45 @@ const PrayerTime = () => {
           { name: "Isya", time: data.jadwal.isya },
         ];
 
-        // Mencari waktu shalat berikutnya berdasarkan waktu sekarang
-        for (let i = 0; i < prayerTimes.length; i++) {
-          const prayerTime = prayerTimes[i];
-          const prayerHour = Number(prayerTime.time.split(":")[0]);
-          const prayerMinute = Number(prayerTime.time.split(":")[1]);
-          if (
-            (prayerHour > currentHour ||
-              prayerHour < currentHour ||
-              (prayerHour === currentHour && prayerMinute > currentMinute)) &&
-            prayerTime.name !== "Terbit" &&
-            prayerTime.name !== "Imsak" &&
-            prayerTime.name !== "Dhuha"
-          ) {
-            if (prayerTime.name === "Subuh") {
-              setNextPrayer({
-                shalat: prayerTime.name,
-                time: prayerTime.time,
-              });
-              setTargetDate(new Date(jamUTC(prayerTime.time, 1)));
-            } else {
-              setNextPrayer({
-                shalat: prayerTime.name,
-                time: prayerTime.time,
-              });
-
-              setTargetDate(new Date(jamUTC(prayerTime.time)));
-              break;
-            }
-          }
-
-          setSkeleton(true);
-        }
+        setPrayerTimes(waktuShalat);
       } catch (error) {
         console.error(error);
       }
     };
 
-    if (loadShalat) {
-      fetchData();
-      setLoadShalat(false);
-    }
-  }, [loadShalat]);
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const currentTime = new Date(); // Waktu sekarang
+    const currentHour = currentTime.getHours();
+    const currentMinute = currentTime.getMinutes();
+
+    const shalatJadwal = () => {
+      for (let i = 0; i < prayerTimes.length; i++) {
+        const prayerTime = prayerTimes[i];
+        const prayerHour = Number(prayerTime.time.split(":")[0]);
+        const prayerMinute = Number(prayerTime.time.split(":")[1]);
+        if (
+          (prayerHour > currentHour ||
+            (prayerHour === currentHour && prayerMinute > currentMinute)) &&
+          prayerTime.name !== "Terbit" &&
+          prayerTime.name !== "Imsak" &&
+          prayerTime.name !== "Dhuha"
+        ) {
+          setNextPrayer({
+            shalat: prayerTime.name,
+            time: prayerTime.time,
+          });
+          setTargetDate(new Date(jamUTC(prayerTime.time)));
+          setSkeleton(true);
+          setLoadShalat(false);
+          break;
+        }
+      }
+    };
+    shalatJadwal();
+  }, [prayerTimes, loadShalat]);
 
   return (
     <>
@@ -175,7 +135,15 @@ const PrayerTime = () => {
           <div>Shalat {nextPrayer.shalat} </div>
           <div className=" text-xl font-bold">{nextPrayer.time} WIB</div>
           <div className="text-xs">
-            {countdown} Menuju Shalat {nextPrayer.shalat}
+            <Countdown
+              date={new Date(targetDate).getTime()}
+              key={new Date(targetDate).getTime()}
+              daysInHours
+              onComplete={() => {
+                setLoadShalat(true);
+              }}
+            />{" "}
+            Menuju Shalat {nextPrayer.shalat}
           </div>
         </>
       )}

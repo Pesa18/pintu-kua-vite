@@ -17,6 +17,7 @@ import axios from "axios";
 const FormRegistration = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [onVerification, setOnVerification] = useState(false);
   const [showPwd, setShowPwd] = useState(false);
   const togglePassword = () => {
     setShowPwd(!showPwd);
@@ -24,16 +25,16 @@ const FormRegistration = () => {
   const variable = location.state;
   const skemaValidasi = Yup.object().shape({
     email: Yup.string()
-      .email("email harus valid")
+      .email("Email harus valid")
       .matches(
         /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
         "Email harus memiliki domain yang valid"
       )
-      .required("email harus diisi"),
-    name: Yup.string().required("Nama wajib diisi"),
-    nik: Yup.string()
-      .matches(/^\d{16}$/, "Number must be exactly 16 digits")
-      .required("NIK wajib diisi"),
+      .required("Email harus diisi"),
+    name: Yup.string().required("Nama harus diisi"),
+    // nik: Yup.string()
+    //   .matches(/^\d{16}$/, "Number must be exactly 16 digits")
+    //   .required("NIK wajib diisi"),
     no_telp: Yup.string()
       .matches(/^[0-9]{10,12}$/, "No hp harus 10 atau 12 digit ")
       .required("No hp wajib diisi"),
@@ -43,6 +44,9 @@ const FormRegistration = () => {
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>])[a-zA-Z\d!@#$%^&*()\-_=+{};:,<.>]{8,}$/,
         "Password harus mengandung huruf besar, huruf kecil, angka, dan setidaknya satu simbol"
       ),
+    confirm_password: Yup.string()
+      .required("Konfirmasi Password harus diisi")
+      .oneOf([Yup.ref("password"), null], "Password harus sama"),
   });
 
   const formik = useFormik({
@@ -50,11 +54,12 @@ const FormRegistration = () => {
       email: variable,
       name: "",
       no_telp: "",
-      nik: "",
       password: "",
+      confirm_password: "",
     },
     validationSchema: skemaValidasi,
     onSubmit: async (values) => {
+      setOnVerification(true);
       try {
         const response = await axios.post(
           "http://apibimas.test/api/register",
@@ -69,13 +74,19 @@ const FormRegistration = () => {
           }
         );
 
-        navigate(`/auth/otp/${response.data.data.uuid}`, {
+        if (!response.data.success) {
+          setOnVerification(false);
+          toast.error("Terjadi kesalahan Verifikasi");
+        }
+        return navigate(`/auth/otp/${response.data.data.uuid}`, {
           state: {
             email: response.data.data.email,
             token: response.data.data.token,
+            expire_otp: response.data.data.expire_otp,
           },
         });
       } catch (error) {
+        setOnVerification(false);
         toast.error("Terjadi kesalahan Verifikasi");
       }
     },
@@ -169,32 +180,7 @@ const FormRegistration = () => {
               </div>
             )}
           </div>
-          <div className="w-full px-3">
-            <span className="p-1 text-sm dark:text-white font-semibold text-primary">
-              NIK/No.KTP
-            </span>
-            <div className="flex mt-1">
-              <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
-                <RxIdCard className="text-primary" />
-              </div>
-              <input
-                onChange={(e) => {
-                  formik.handleChange(e);
-                }}
-                value={formik.values.nik}
-                type="number"
-                name="nik"
-                id="nik"
-                className="  border-[2px] border-second invalid:focus:border-pink-800  dark:text-light bg-light bg-opacity-10 w-full text-third placeholder:text-light -ml-10 -mr-10  pl-10 pr-3 py-1 rounded-lg outline-none  focus:border-primary placeholder:text-sm "
-                placeholder="Masukkan NIK/No.KTP"
-              />
-            </div>
-            {formik.errors.nik && formik.touched.nik && (
-              <div className="text-xs px-1 mt-1 text-pink-800 dark:text-pink-500">
-                {formik.errors.nik} !
-              </div>
-            )}
-          </div>
+
           <div className="w-full px-3">
             <span className="p-1 text-sm dark:text-white font-semibold text-primary">
               Password
@@ -236,6 +222,48 @@ const FormRegistration = () => {
               </div>
             )}
           </div>
+          <div className="w-full px-3">
+            <span className="p-1 text-sm dark:text-white font-semibold text-primary">
+              Ulangi Password
+            </span>
+            <div className="flex mt-1">
+              <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
+                <RxLockClosed className="text-primary" />
+              </div>
+              <input
+                onChange={(e) => {
+                  formik.handleChange(e);
+                }}
+                value={formik.values.confirm_password}
+                type={showPwd ? "text" : "password"}
+                name="confirm_password"
+                id="confirm_password"
+                className="  border-[2px] border-second invalid:focus:border-pink-800  dark:text-light bg-light bg-opacity-10 w-full text-third placeholder:text-light -ml-10 -mr-10  pl-10 pr-3 py-1 rounded-lg outline-none  focus:border-primary placeholder:text-sm "
+                placeholder="Ulangi password"
+              />
+              <div className="w-10 z-30 pl-1 text-center cursor-pointer flex items-center justify-center">
+                <button type="button" onClick={togglePassword}>
+                  {showPwd ? (
+                    <RxEyeOpen
+                      className="text-second cursor-pointer"
+                      id="password-eye"
+                    />
+                  ) : (
+                    <RxEyeClosed
+                      className="text-second cursor-pointer"
+                      id="password-eye"
+                    />
+                  )}
+                </button>
+              </div>
+            </div>
+            {formik.errors.confirm_password &&
+              formik.touched.confirm_password && (
+                <div className="text-xs px-1 mt-1 text-pink-800 dark:text-pink-500">
+                  {formik.errors.confirm_password} !
+                </div>
+              )}
+          </div>
           <div className="flex w-full mt-3 text-third dark:text-light pr-16">
             <TbShieldLock className=" text-lg" />
             <div className="ml-1 text-[10px] ">
@@ -246,7 +274,11 @@ const FormRegistration = () => {
             type="submit"
             className="bg-primary mt-3 p-3 text-sm text-white font-bold drop-shadow-sm w-full rounded-lg"
           >
-            Submit
+            {onVerification ? (
+              <div className="custom-loader mx-auto "></div>
+            ) : (
+              "Submit"
+            )}
           </button>
           <div className="text-[10px] px-8 text-center mt-3 mb-5 dark:text-light text-third">
             Dengan daftar kamu menyetujui{" "}

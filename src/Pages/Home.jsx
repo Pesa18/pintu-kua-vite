@@ -5,15 +5,16 @@ import { ShalatCard } from "../components/shalatCard";
 import { MenuHome } from "../components/menuHome";
 import { InfoGraph } from "../components/info";
 import { useSignOut } from "react-auth-kit";
-import { useNavigate } from "react-router-dom";
+import { useAuthUser } from "react-auth-kit";
 
 const HomePage = () => {
+  const user = useAuthUser();
+
   const signOut = useSignOut();
-  const navigate = useNavigate();
-  function signOutApp() {
+  const logOut = () => {
     signOut();
-    navigate("/");
-  }
+    window.location.reload();
+  };
   const sheet = useRef(null);
   const onPageBeforeOut = () => {
     // Close opened sheets on page out
@@ -46,14 +47,17 @@ const HomePage = () => {
             ></div>
             <div className="flex flex-col ml-2 justify-center">
               <div className="text-xs text-light">Assalamualaikum..👏</div>
-              <div className="text-sm text-light font-bold">
-                Asep Saefudin ..
-              </div>
+              <div className="text-sm text-light font-bold">{user().name}</div>
             </div>
           </div>
         </NavLeft>
         <NavRight textColor="white" className="pr-3">
-          <TbBell className="text-xl" onClick={signOutApp()} />
+          <TbBell
+            className="text-xl"
+            onClick={() => {
+              logOut();
+            }}
+          />
         </NavRight>
       </Navbar>
       <div className="h-60   px-3">

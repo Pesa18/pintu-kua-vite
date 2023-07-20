@@ -21,6 +21,7 @@
     "moment-hijri": "^2.1.2",
     "react": "^18.2.0",
     "react-auth-kit": "^2.12.4",
+    "react-countdown": "^2.3.5",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
     "react-otp-input": "^3.0.2",

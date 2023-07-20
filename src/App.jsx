@@ -4,12 +4,13 @@ import FormLogin from "./components/Login";
 import FormRegistration from "./components/Registration";
 import HomeView from "./Pages/HomeView";
 import OtpPages from "./Pages/Otp";
+import NotFound from "./Pages/Notfound404";
 import { RequireAuth } from "react-auth-kit";
 function App() {
   return (
     <Routes>
       <Route
-        path="/"
+        path="/:uuid"
         element={
           <RequireAuth loginPath="/auth">
             <HomeView />
@@ -21,7 +22,7 @@ function App() {
         <Route path="daftar" element={<FormRegistration />}></Route>
         <Route path="otp/:uuid" element={<OtpPages />}></Route>
       </Route>
-      <Route path="/*" element={<Navigate to="/auth" replace />} />
+      <Route path="/*" element={<NotFound />} />
     </Routes>
   );
 }
