@@ -55,7 +55,7 @@ const FormLogin = () => {
         let password = values.password;
         try {
           const response = await axios.post(
-            "http://apibimas.test/api/login",
+            `${import.meta.env.VITE_API_URL}/login`,
             {
               email,
               password,
@@ -63,7 +63,7 @@ const FormLogin = () => {
             {
               headers: {
                 accept: "application/json",
-                Authenticated: 123124542354235,
+                Authenticated: import.meta.env.VITE_API_KEY,
               },
             }
           );
@@ -72,7 +72,10 @@ const FormLogin = () => {
               token: response.data.token,
               tokenType: "Bearer",
               expiresIn: 36000,
-              authState: { token: response.data.token },
+              authState: {
+                token: response.data.token,
+                uuid: response.data.uuid,
+              },
             });
 
             history(`/${response.data.uuid}`);
@@ -111,8 +114,7 @@ const FormLogin = () => {
   useEffect(() => {
     try {
       window.google.accounts.id.initialize({
-        client_id:
-          "704486977216-u3fuh411b8e47970d0o4ntij3db89l2d.apps.googleusercontent.com",
+        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
         callback: handleCallback,
       });
       window.google.accounts.id.renderButton(
@@ -120,7 +122,7 @@ const FormLogin = () => {
         { theme: "outline", size: "large" }
       );
     } catch (error) {
-      return null;
+      console.error("Error initializing Google Sign-In:", error);
     }
   }, []);
 

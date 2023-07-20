@@ -3,14 +3,14 @@ import axios from "axios";
 export const checkEmail = async (email) => {
   try {
     const response = await axios.post(
-      "http://apibimas.test/api/ceklogin",
+      `${import.meta.env.VITE_API_URL}/ceklogin`,
       {
         email,
       },
       {
         headers: {
           accept: "application/json",
-          Authenticated: 123124542354235,
+          Authenticated: import.meta.env.VITE_API_KEY,
         },
       }
     );

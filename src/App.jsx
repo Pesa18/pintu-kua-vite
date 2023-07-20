@@ -5,8 +5,11 @@ import FormRegistration from "./components/Registration";
 import HomeView from "./Pages/HomeView";
 import OtpPages from "./Pages/Otp";
 import NotFound from "./Pages/Notfound404";
-import { RequireAuth } from "react-auth-kit";
+import { RequireAuth, useIsAuthenticated, useAuthUser } from "react-auth-kit";
 function App() {
+  const isAuthenticated = useIsAuthenticated();
+  const user = useAuthUser();
+
   return (
     <Routes>
       <Route

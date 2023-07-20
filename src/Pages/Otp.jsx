@@ -21,8 +21,10 @@ export default function OtpPages() {
     initialValues: {
       otpvalue: "",
     },
+    validateOnChange: true,
     validationSchema: skemaValidasi,
     onSubmit: async (values) => {
+      setResend(true);
       let email = location.state.email;
       let otp = values.otpvalue;
       try {
@@ -42,8 +44,9 @@ export default function OtpPages() {
         );
 
         if (response.data.error) {
-          return setResend(true), toast.error(response.data.error.message);
+          return setResend(false), toast.error(response.data.error.message);
         }
+        setResend(false);
         return navigate("/auth");
       } catch (error) {
         throw error;
@@ -52,6 +55,7 @@ export default function OtpPages() {
   });
 
   const resendOtp = async () => {
+    setResend(true);
     const response = await axios.get(
       "http://apibimas.test/api/send-verification",
       {
@@ -71,61 +75,85 @@ export default function OtpPages() {
     return null;
   };
   useEffect(() => {
+    if (formik.isValid) {
+      formik.submitForm();
+    }
+  }, [formik.isValid]);
+
+  useEffect(() => {
     if (!state) {
       navigate("/auth");
     }
   }, []);
   return (
-    <div className="mx-auto">
-      <div>{location.state.email}</div>
+    <div className=" relative mt-6 mx-auto text-third dark:text-light  flex flex-col items-center justify-between">
+      <div className="text-center text-lg">Kode OTP terkirim </div>
+      <div>
+        Cek email <span className="font-bold">{location.state.email}</span>
+      </div>
       <Countdown
         date={expireOtp}
         key={expireOtp}
-        onComplete={() => {
-          setResend(true);
-        }}
         renderer={({ minutes, seconds }) => {
           return (
-            <span>
-              {zeroPad(minutes)}:{zeroPad(seconds)}
+            <span className="text-lg font-bold">
+              {minutes}:{zeroPad(seconds)}
             </span>
           );
         }}
       />
       <form action="" onSubmit={formik.handleSubmit}>
         <OTPInput
-          className=""
           value={formik.values.otpvalue}
           onChange={(e) => {
             formik.setFieldValue("otpvalue", e);
           }}
           numInputs={4}
-          renderSeparator={<span>-</span>}
-          inputStyle={`w-30 h-20 ml-5  ring-1 ${
+          renderSeparator={
+            <span className="mx-auto text-center  text-xl font-bold">-</span>
+          }
+          containerStyle={"mt-9 w-full text-center"}
+          inputStyle={`!w-16 dark:bg-light dark:text-third text-center font-bold text-2xl mx-2  h-20 rounded-xl ring-2 ring-primary ${
             formik.errors.otpvalue ? "ring-pink-600" : ""
           }`}
           renderInput={(props) => <input {...props} />}
         />
-
-        <button
-          type="submit"
-          className="p-3 mt-10 bg-slate-800 text-white rounded-lg"
-        >
-          {" "}
-          Submit
-        </button>
       </form>{" "}
-      {resend && (
-        <button
-          onClick={() => {
-            resendOtp();
-          }}
-          className="p-3 mt-10 bg-slate-800 text-white rounded-lg"
-        >
-          {" "}
-          Resend
-        </button>
-      )}
+      <div className="flex flex-row pt-8 items-center">
+        <div className="text-sm mr-2">Tidak menerima OTP?</div>
+        <div className="font-bold" onClick={resendOtp}>
+          Kirim OTP lagi
+        </div>
+      </div>
+      <div
+        className={`absolute ${
+          resend ? "" : "hidden"
+        } bg-white bg-opacity-60 z-10 h-full w-full items-center flex justify-center`}
+      >
+        <div className="flex items-center">
+          <span className="text-3xl mr-4">Loading</span>
+          <svg
+            className="animate-spin h-5 w-5 text-gray-600"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }
