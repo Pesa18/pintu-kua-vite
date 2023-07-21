@@ -35,7 +35,7 @@ export default function HomeView() {
         const response = await axios.get("http://apibimas.test/api/user", {
           headers: {
             accept: "application/json",
-            Authenticated: 123124542354235,
+            Authenticated: import.meta.env.VITE_API_KEY,
             Authorization: `Bearer ${user().token}`,
           },
         });
@@ -44,57 +44,57 @@ export default function HomeView() {
           return setItem(`user_${uuid}`, { data: response.data.user });
         }
         return LogOut();
-      } catch (error) {}
+      } catch (error) {
+        return LogOut();
+      }
     };
 
     checklogin();
   }, []);
   return (
-    <>
-      <App {...f7params} className="max-w-4xl mx-auto font-poppins">
-        <View main url="/">
-          <Toolbar
-            bottom
-            tabbar
-            color="teal"
-            className="rounded-t-2xl pb-20   shadow-xl"
-          >
-            <Link className="flex flex-col">
-              <img
-                src="/icons/tabbar/wired-outline-63-home.png"
-                className="h-8"
-                alt=""
-              />
-              <div className="text-primary text-xs">Home</div>
-            </Link>
-            <Link className="flex flex-col">
-              <img
-                src="/icons/tabbar/wired-outline-112-book-morph.gif"
-                className="h-8"
-                alt=""
-              />
-              <div className="text-xs">Al-qur'an</div>
-            </Link>
+    <App {...f7params} className=" max-w-4xl mx-auto font-poppins">
+      <View main url="/">
+        <Toolbar
+          bottom
+          tabbar
+          color="teal"
+          className="rounded-t-2xl pb-20   shadow-xl"
+        >
+          <Link className="flex flex-col">
+            <img
+              src="/icons/tabbar/wired-outline-63-home.png"
+              className="h-8"
+              alt=""
+            />
+            <div className="text-primary text-xs">Home</div>
+          </Link>
+          <Link className="flex flex-col">
+            <img
+              src="/icons/tabbar/wired-outline-112-book-morph.gif"
+              className="h-8"
+              alt=""
+            />
+            <div className="text-xs">Al-qur'an</div>
+          </Link>
 
-            <Link className="flex flex-col">
-              <img
-                src="/icons/tabbar/wired-outline-981-consultation.gif"
-                className="h-8"
-                alt=""
-              />
-              <div className="text-xs">Konsultasi</div>
-            </Link>
-            <Link className="flex flex-col">
-              <img
-                src="/icons/tabbar/wired-outline-21-avatar.gif"
-                className="h-8"
-                alt=""
-              />
-              <div className="text-xs">User</div>
-            </Link>
-          </Toolbar>
-        </View>
-      </App>
-    </>
+          <Link className="flex flex-col">
+            <img
+              src="/icons/tabbar/wired-outline-981-consultation.gif"
+              className="h-8"
+              alt=""
+            />
+            <div className="text-xs">Konsultasi</div>
+          </Link>
+          <Link className="flex flex-col">
+            <img
+              src="/icons/tabbar/wired-outline-21-avatar.gif"
+              className="h-8"
+              alt=""
+            />
+            <div className="text-xs">User</div>
+          </Link>
+        </Toolbar>
+      </View>
+    </App>
   );
 }

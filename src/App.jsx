@@ -6,6 +6,7 @@ import HomeView from "./Pages/HomeView";
 import OtpPages from "./Pages/Otp";
 import NotFound from "./Pages/Notfound404";
 import { RequireAuth, useIsAuthenticated, useAuthUser } from "react-auth-kit";
+import LupaPassword from "./Pages/ForgotPwd";
 function App() {
   const isAuthenticated = useIsAuthenticated();
   const user = useAuthUser();
@@ -22,9 +23,11 @@ function App() {
       />
       <Route path="/auth" element={<Auth />}>
         <Route index element={<FormLogin />}></Route>
+        <Route path="forgot-password/:uuid" element={<LupaPassword />}></Route>
         <Route path="daftar" element={<FormRegistration />}></Route>
         <Route path="otp/:uuid" element={<OtpPages />}></Route>
       </Route>
+
       <Route path="/*" element={<NotFound />} />
     </Routes>
   );

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import OTPInput from "react-otp-input";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 
 export default function OtpPages() {
   const [resend, setResend] = useState(false);
+  const params = useParams();
   const location = useLocation();
   const [expireOtp, setExpireOtp] = useState(new Date().getTime() + 120000);
   const state = location.state;
@@ -37,7 +38,7 @@ export default function OtpPages() {
           {
             headers: {
               accept: "application/json",
-              Authenticated: 123124542354235,
+              Authenticated: import.meta.env.VITE_API_KEY,
               Authorization: `Bearer ${location.state.token}`,
             },
           }
@@ -46,9 +47,16 @@ export default function OtpPages() {
         if (response.data.error) {
           return setResend(false), toast.error(response.data.error.message);
         }
+
         setResend(false);
+        if (location.state.mode === "forgot-password") {
+          return navigate(`/auth/forgot-password/${params}`, {
+            state: { token: location.state.token },
+          });
+        }
         return navigate("/auth");
       } catch (error) {
+        setResend(false);
         throw error;
       }
     },
@@ -56,23 +64,28 @@ export default function OtpPages() {
 
   const resendOtp = async () => {
     setResend(true);
-    const response = await axios.get(
-      "http://apibimas.test/api/send-verification",
-      {
-        headers: {
-          accept: "application/json",
-          Authenticated: 123124542354235,
-          Authorization: `Bearer ${location.state.token}`,
-        },
+    try {
+      const response = await axios.get(
+        "http://apibimas.test/api/send-verification",
+        {
+          headers: {
+            accept: "application/json",
+            Authenticated: import.meta.env.VITE_API_KEY,
+            Authorization: `Bearer ${location.state.token}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        setExpireOtp(new Date().getTime() + 120000);
+        return setResend(false);
       }
-    );
 
-    if (response.data.success) {
-      setExpireOtp(new Date().getTime() + 120000);
-      return setResend(false);
+      return null;
+    } catch (error) {
+      toast.error("Gagal Authentikasi");
+      setResend(false);
     }
-
-    return null;
   };
   useEffect(() => {
     if (formik.isValid) {
@@ -121,7 +134,7 @@ export default function OtpPages() {
       </form>{" "}
       <div className="flex flex-row pt-8 items-center">
         <div className="text-sm mr-2">Tidak menerima OTP?</div>
-        <div className="font-bold" onClick={resendOtp}>
+        <div className="font-bold cursor-pointer" onClick={resendOtp}>
           Kirim OTP lagi
         </div>
       </div>

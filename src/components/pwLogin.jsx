@@ -1,7 +1,40 @@
 import React from "react";
 import { RxEyeOpen, RxEyeClosed, RxLockClosed } from "react-icons/rx";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const PwLogin = (props) => {
+  const navigate = useNavigate();
+  const PasswordChange = async () => {
+    props.verification("true");
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/forgot-password`,
+        {
+          email: props.formik.values.email,
+        },
+        {
+          headers: {
+            accept: "application/json",
+            Authenticated: import.meta.env.VITE_API_KEY,
+          },
+        }
+      );
+      if (!response.data.success) {
+        props.verification("false");
+        toast.error("User Tidak terdaftar");
+      }
+      return navigate(`/auth/otp/${response.data.uuid}`, {
+        state: { token: response.data.token,email: props.formik.values.email ,mode: "forgot-password" },
+      });
+    } catch (error) {
+      props.verification("false");
+      toast.error("Ada kesalahan");
+      throw error;
+    }
+  };
+
   return (
     <>
       <div className="flex -mx-3 ">
@@ -44,7 +77,12 @@ const PwLogin = (props) => {
           {props.formik.errors.password}
         </div>
       )}
-      <div className="mb-1 text-xs dark:text-light font-semibold text-primary mt-3 text-right cursor-pointer  w-full">
+      <div
+        className="mb-1 text-xs dark:text-light font-semibold text-primary mt-3 text-right cursor-pointer  w-full"
+        onClick={() => {
+          PasswordChange();
+        }}
+      >
         Lupa Password?
       </div>
     </>

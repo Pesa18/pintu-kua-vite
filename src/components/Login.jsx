@@ -6,7 +6,7 @@ import PwLogin from "./pwLogin";
 import jwt_decode from "jwt-decode";
 import { googleSign } from "../Auth/GoogleAuth";
 import * as Yup from "yup";
-import { useFormik } from "formik";
+import { replace, useFormik } from "formik";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { checkEmail } from "../Auth/LoginFetch";
@@ -23,7 +23,7 @@ const FormLogin = () => {
   const [isLogin, setLogin] = useState(false);
   const [isRegistrasi, setRegistrasi] = useState(false);
   const [onVerification, setOnVerification] = useState(false);
-
+  console.log(onVerification);
   function handleCallback(response) {
     const userData = jwt_decode(response.credential);
     googleSign(userData.email);
@@ -68,6 +68,7 @@ const FormLogin = () => {
             }
           );
           if (response.data.login) {
+            setOnVerification(false);
             LogIn({
               token: response.data.token,
               tokenType: "Bearer",
@@ -99,6 +100,7 @@ const FormLogin = () => {
           history("/auth/daftar", { state: values.email });
         }
         checkEmail(values.email).then((value) => {
+          setOnVerification(false);
           if (!value.status) {
             return (
               setOnVerification(false),
@@ -171,6 +173,7 @@ const FormLogin = () => {
               showPwd={showPwd}
               togglePassword={togglePassword}
               formik={formik}
+              verification={setOnVerification}
             />
           )}
           <div className="flex w-full text-third dark:text-light pr-16">
@@ -184,7 +187,11 @@ const FormLogin = () => {
             className="bg-primary mt-3 p-3 text-sm text-white font-bold drop-shadow-sm w-full rounded-lg"
           >
             {isLogin ? (
-              "Login"
+              onVerification ? (
+                <div className="custom-loader mx-auto "></div>
+              ) : (
+                "Login"
+              )
             ) : isRegistrasi ? (
               "Daftar"
             ) : onVerification ? (
