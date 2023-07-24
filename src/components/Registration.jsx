@@ -69,7 +69,7 @@ const FormRegistration = () => {
           {
             headers: {
               accept: "application/json",
-              Authenticated: 123124542354235,
+              Authenticated: import.meta.env.VITE_API_KEY,
             },
           }
         );

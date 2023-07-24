@@ -32,22 +32,22 @@ const PrayerTime = () => {
         const data = response.data.data;
 
         // Membuat daftar waktu shalat dalam urutan dari awal hari hingga akhir hari
-        const waktuShalat = [
-          { name: "Subuh", time: "21:39" },
-          { name: "Dzuhur", time: "22:40" },
-          { name: "Ashar", time: "15:07" },
-          { name: "Isya", time: "23:08" },
-        ];
         // const waktuShalat = [
-        //   { name: "Imsak", time: data.jadwal.imsak },
-        //   { name: "Subuh", time: data.jadwal.subuh },
-        //   { name: "Terbit", time: data.jadwal.terbit },
-        //   { name: "Dhuha", time: data.jadwal.dhuha },
-        //   { name: "Dzuhur", time: data.jadwal.dzuhur },
-        //   { name: "Ashar", time: data.jadwal.ashar },
-        //   { name: "Maghrib", time: data.jadwal.maghrib },
-        //   { name: "Isya", time: data.jadwal.isya },
+        //   { name: "Subuh", time: "21:39" },
+        //   { name: "Dzuhur", time: "22:40" },
+        //   { name: "Ashar", time: "15:07" },
+        //   { name: "Isya", time: "23:08" },
         // ];
+        const waktuShalat = [
+          { name: "Imsak", time: data.jadwal.imsak },
+          { name: "Subuh", time: data.jadwal.subuh },
+          { name: "Terbit", time: data.jadwal.terbit },
+          { name: "Dhuha", time: data.jadwal.dhuha },
+          { name: "Dzuhur", time: data.jadwal.dzuhur },
+          { name: "Ashar", time: data.jadwal.ashar },
+          { name: "Maghrib", time: data.jadwal.maghrib },
+          { name: "Isya", time: data.jadwal.isya },
+        ];
 
         setPrayerTimes(waktuShalat);
       } catch (error) {
@@ -57,12 +57,10 @@ const PrayerTime = () => {
 
     fetchData();
   }, []);
-
   useEffect(() => {
     const currentTime = new Date(); // Waktu sekarang
     const currentHour = currentTime.getHours();
     const currentMinute = currentTime.getMinutes();
-
     const shalatJadwal = () => {
       for (let i = 0; i < prayerTimes.length; i++) {
         const prayerTime = prayerTimes[i];
@@ -70,30 +68,28 @@ const PrayerTime = () => {
         const prayerMinute = Number(prayerTime.time.split(":")[1]);
         if (
           (prayerHour > currentHour ||
-            prayerHour < currentHour ||
             (prayerHour === currentHour && prayerMinute > currentMinute)) &&
           prayerTime.name !== "Terbit" &&
           prayerTime.name !== "Imsak" &&
           prayerTime.name !== "Dhuha"
         ) {
-          if (prayerTime.name === "Subuh" && prayerHour < currentHour) {
-            setNextPrayer({
-              shalat: prayerTime.name,
-              time: prayerTime.time,
-            });
-            setTargetDate(new Date(jamUTC(prayerTime.time, 1)));
-            setSkeleton(true);
-            setLoadShalat(false);
-          } else {
-            setNextPrayer({
-              shalat: prayerTime.name,
-              time: prayerTime.time,
-            });
-            setTargetDate(new Date(jamUTC(prayerTime.time)));
-            setSkeleton(true);
-            setLoadShalat(false);
-            break;
-          }
+          setNextPrayer({
+            shalat: prayerTime.name,
+            time: prayerTime.time,
+          });
+          setTargetDate(new Date(jamUTC(prayerTime.time)));
+          setSkeleton(true);
+          setLoadShalat(false);
+          break;
+        } else if (prayerHour < currentHour && prayerTime.name == "Subuh") {
+          setNextPrayer({
+            shalat: prayerTime.name,
+            time: prayerTime.time,
+          });
+          setTargetDate(new Date(jamUTC(prayerTime.time, 1)));
+          setSkeleton(true);
+          setLoadShalat(false);
+        } else {
         }
       }
     };
