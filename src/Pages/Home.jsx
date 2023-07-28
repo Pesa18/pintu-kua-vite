@@ -1,5 +1,16 @@
 import { useState, useRef } from "react";
-import { Page, Navbar, NavLeft, NavRight, f7 } from "framework7-react";
+import {
+  Page,
+  Navbar,
+  NavLeft,
+  NavRight,
+  f7,
+  Link,
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "framework7-react";
 import { TbBell } from "react-icons/tb";
 import { ShalatCard } from "../components/shalatCard";
 import { MenuHome } from "../components/menuHome";
@@ -65,9 +76,46 @@ const HomePage = () => {
           <ShalatCard />
         </div>
       </div>
-      <div className="w-full dark:bg-teal-950 bg-white -mt-4 rounded-t-3xl h-screen  ">
+      <div className="w-full dark:bg-teal-950 bg-white -mt-4 rounded-t-3xl ">
         <MenuHome />
         <InfoGraph />
+
+        <div className="flex flex-row mt-6">
+          <Card color="teal" className="!mb-24">
+            <CardHeader
+              className="!relative !mx-3 !top-2 !rounded-lg !h-40  !bg-cover"
+              valign="bottom"
+              style={{
+                backgroundImage:
+                  "url(https://cdn.framework7.io/placeholder/nature-1000x600-3.jpg)",
+              }}
+            >
+              Journey To Mountains
+            </CardHeader>
+            <CardContent>
+              <p className="date">Posted on January 21, 2015</p>
+            </CardContent>
+            <CardFooter>
+              <Link>Like</Link>
+              <Link>Read more</Link>
+            </CardFooter>
+          </Card>
+          <Card color="teal" className="!mb-24">
+            <CardHeader
+              className="!relative !mx-3 !top-2 !rounded-lg !h-40  !bg-cover"
+              valign="bottom"
+              style={{
+                backgroundImage:
+                  "url(https://cdn.framework7.io/placeholder/nature-1000x600-3.jpg)",
+              }}
+            >
+              Journey To Mountains
+            </CardHeader>
+            <CardContent>
+              <p className="date">Posted on January 21, 2015</p>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </Page>
   );

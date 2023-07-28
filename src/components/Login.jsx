@@ -93,6 +93,7 @@ const FormLogin = () => {
             formik.setErrors({ password: "Password Salah" });
           }
         } catch (error) {
+          setOnVerification(false), toast.error("Terjadi Kesalahan Verifikasi");
           throw error;
         }
       } else {
