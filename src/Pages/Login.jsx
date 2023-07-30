@@ -51,8 +51,8 @@ const Login = (props) => {
               />
             )}
           </div>
-          <div className="mt-4 bg-light rounded-xl w-full flex flex-row h-1/3 border">
-            <div className="w-full p-2 mb-5 text-third  flex flex-col  ">
+          <div className="mt-4 bg-bluegreen rounded-lg dark:bg-light w-full flex flex-row h-1/3 border">
+            <div className="w-full p-2 mb-5 text-white dark:text-bluegreen  flex flex-col  ">
               <div className="font-extrabold tracking-tight text-xl">
                 Selamat Datang Kembali 👋
               </div>{" "}

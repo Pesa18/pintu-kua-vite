@@ -26,7 +26,11 @@ const PwLogin = (props) => {
         toast.error("User Tidak terdaftar");
       }
       return navigate(`/auth/otp/${response.data.uuid}`, {
-        state: { token: response.data.token,email: props.formik.values.email ,mode: "forgot-password" },
+        state: {
+          token: response.data.token,
+          email: props.formik.values.email,
+          mode: "forgot-password",
+        },
       });
     } catch (error) {
       props.verification("false");
@@ -51,7 +55,7 @@ const PwLogin = (props) => {
               id="password"
               name="password"
               onChange={props.formik.handleChange}
-              className=" dark:text-light bg-light bg-opacity-10 text-third w-full placeholder:text-sm placeholder:text-light  -ml-10 -mr-10  pl-10 pr-3 py-2 rounded-lg ring-2 ring-light focus:ring-second outline-none "
+              className=" dark:text-light bg-light bg-opacity-10 text-third w-full placeholder:text-sm placeholder:text-light  -ml-10 -mr-10  pl-10 pr-3 py-2 rounded-lg ring-2 ring-light focus:ring-primary outline-none "
               placeholder="Password"
             />
             <div className="w-10 z-30 pl-1 text-center cursor-pointer flex items-center justify-center">

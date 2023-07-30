@@ -11,6 +11,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tailwindcss/line-clamp": "^0.4.4",
+    "@tawk.to/tawk-messenger-react": "^2.0.2",
     "axios": "^1.4.0",
     "formik": "^2.4.2",
     "framework7": "^8.2.0",

@@ -150,7 +150,6 @@ const PrayerTime = () => {
                 setLoadShalat(true);
               }}
             />{" "}
-            Menuju Shalat {nextPrayer.shalat}
           </div>
         </>
       )}

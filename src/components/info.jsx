@@ -1,10 +1,18 @@
 import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { Card } from "framework7-react";
+import {
+  Button,
+  Card,
+  PageContent,
+  Sheet,
+  SkeletonBlock,
+} from "framework7-react";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 
-export const InfoGraph = () => {
+import { MdArrowForwardIos } from "react-icons/md";
+
+export const InfoGraph = ({ banner }) => {
   const pagination = {
     clickable: true,
     renderBullet: function (index, className) {
@@ -12,30 +20,88 @@ export const InfoGraph = () => {
     },
   };
   return (
-    <>
-      <div className=" ml-4 font-semibold">Info</div>
+    <div className="px-2 mb-2">
+      <div className="flex flex-row justify-between items-center mb-3">
+        <div className="  font-semibold ">
+          <span className=" bg-greenday p-0.5 mr-1"></span>Info KUA
+        </div>
+        <div className="text-xs text-primary">Lihat Semua</div>
+      </div>
+
       <Swiper
         modules={[Pagination]}
         pagination={pagination}
         slidesPerView={"auto"}
-        centeredSlides={true}
-        spaceBetween={30}
-        className="h-52"
+        spaceBetween={10}
+        className=" !w-full  "
       >
-        <SwiperSlide className=" w-1/2 h-1/2 overflow-hidden rounded-lg">
-          <img
-            src="https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/discovery-desktop/promo/2023/06/07/a1c3ba1f-04d4-41ee-9590-b2378309988f-1686121774997-c303a3e0b75d8fd702a89bcd64d39dd5.png"
-            alt=""
-            className=" object-cover"
-          />
+        {banner.map((item) => (
+          <SwiperSlide className=" !w-[80%] !h-40" key={item.id}>
+            <img
+              src={`http://bimasadmin.test/${item.foto_berita}`}
+              alt=""
+              className=" !object-cover w-full !h-36 rounded-xl"
+            />
+          </SwiperSlide>
+        ))}
+        ;
+      </Swiper>
+    </div>
+  );
+};
+
+export const InfoKlik = () => {
+  return (
+    <>
+      <div className="w-full  bg-yellow-100 bg-cover mb-4">
+        <div className="flex flex-row justify-between items-center">
+          <div className="flex flex-col p-2 gap-2">
+            <div className="font-extrabold text-lg text-bluegreen">
+              Konsultasi tentang keluarga?
+            </div>
+            <div className="text-[10px] font-light">
+              Tanya KUA aja! yuk lihat apa saja yang bisa di konsultasikan di
+              KUA.
+            </div>
+            <div className="">
+              <Button
+                fill
+                sheetOpen={".sheet-konsul"}
+                className="!bg-bluegreen"
+              >
+                Konsultasi
+              </Button>
+            </div>
+          </div>
+          <img src="/images/3d-konsul.png" className="h-40" alt="" />
+        </div>
+      </div>
+
+      <Sheet
+        backdrop={true}
+        className="sheet-konsul"
+        style={{ height: "auto" }}
+        swipeToClose
+        push
+      >
+        <div className="w-10 h-1.5 rounded-full mx-auto bg-slate-600 mt-0.5"></div>
+        <PageContent className="!h-72">asdd</PageContent>
+      </Sheet>
+    </>
+  );
+};
+
+export const SkeletonBanner = () => {
+  return (
+    <>
+      <Swiper slidesPerView={"auto"} spaceBetween={10} className=" !w-full  ">
+        <SwiperSlide className=" !w-[80%] !h-40">
+          <SkeletonBlock className="!h-36 rounded-xl skeleton-effect-wave" />
         </SwiperSlide>
-        <SwiperSlide className=" w-[50%]">
-          <img
-            src="https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/discovery-desktop/promo/2023/06/07/a1c3ba1f-04d4-41ee-9590-b2378309988f-1686121774997-c303a3e0b75d8fd702a89bcd64d39dd5.png"
-            alt=""
-            className="w-full h-full "
-          />
+        <SwiperSlide className=" !w-[80%] !h-40">
+          <SkeletonBlock className="!h-36 rounded-xl skeleton-effect-wave" />
         </SwiperSlide>
+        ;
       </Swiper>
     </>
   );

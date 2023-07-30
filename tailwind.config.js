@@ -11,12 +11,14 @@ export const theme = {
       quicksand: "Quicksand",
     },
     colors: {
-      primary: "#009a76",
+      primary: "#38a3a5",
       light: "#cde5e5",
-      second: "#65afa6",
+      second: "#38a3a5",
       third: "#024b42",
+      greenday: "#57cc99",
+      bluegreen: "#22577a",
     },
   },
 };
 export const darkMode = "class";
-export const plugins = [];
+export const plugins = [require("@tailwindcss/line-clamp")];

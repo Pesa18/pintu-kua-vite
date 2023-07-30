@@ -6,13 +6,26 @@ import {
   HiClock,
   HiUser,
 } from "react-icons/hi2";
+
+import {
+  FaRegCompass,
+  FaKaaba,
+  FaMoon,
+  FaCalculator,
+  FaHandshake,
+  FaRegIdCard,
+} from "react-icons/fa";
+import { MdOutlineMosque } from "react-icons/md";
+import { GiPublicSpeaker } from "react-icons/gi";
+import { BiSolidBookReader } from "react-icons/bi";
+import { CgRing } from "react-icons/cg";
 import { useState, useEffect } from "react";
 
 export const MenuHome = () => {
   const [activeTab, setActiveTab] = useState(0);
   return (
     <>
-      <div className="p-4">
+      <div className="p-2 mb-4">
         <Segmented strong tag="p">
           <Button
             small
@@ -23,7 +36,7 @@ export const MenuHome = () => {
             }}
             tabLink={"#tab-1"}
           >
-            Islam
+            Keislaman
           </Button>
           <Button
             small
@@ -34,7 +47,7 @@ export const MenuHome = () => {
             tabLink={"#tab-2"}
             color="teal"
           >
-            Nikah
+            Pernikahan
           </Button>
           <Button
             small
@@ -43,6 +56,7 @@ export const MenuHome = () => {
               setActiveTab(2);
             }}
             color="teal"
+            tabLink={"#tab-3"}
           >
             Layanan
           </Button>
@@ -52,45 +66,137 @@ export const MenuHome = () => {
           <Tab id={"tab-1"} tabActive={activeTab === 0}>
             <div className="grid grid-cols-4 gap-4  ">
               <Link
-                className="text-primary"
+                className="text-greenday"
                 href="/quran"
                 routeProps={{ Name: "asep" }}
               >
                 <div className="flex flex-col justify-center items-center  text-center">
-                  <HiClock className="text-4xl bg-light rounded-lg p-1 mb-1" />
-                  <div className="text-xs">Shalat</div>
+                  <HiClock className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-[9px] text-bluegreen">Jadwal Shalat</div>
                 </div>
               </Link>
-              <Link className="text-primary">
+              <Link className="text-greenday">
                 <div className="flex flex-col justify-center items-center  text-center">
-                  <HiBookOpen className="text-4xl bg-light rounded-lg p-1 mb-1" />
-                  <div className="text-xs">Al-Qur'an</div>
+                  <HiBookOpen className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-[9px] text-bluegreen">Al-Qur'an</div>
                 </div>
               </Link>
-              <Link className="text-primary">
+              <Link className="text-greenday">
                 <div className="flex flex-col justify-center items-center  text-center">
-                  <HiUser className="text-4xl bg-light rounded-lg p-1 mb-1" />
-                  <div className="text-xs">Al-Qur'an</div>
+                  <FaRegCompass className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-[9px] text-bluegreen">Qiblat</div>
+                </div>
+              </Link>
+              <Link className="text-greenday">
+                <div className="flex flex-col justify-center items-center  text-center">
+                  <FaKaaba className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-[9px] text-bluegreen">Haji</div>
+                </div>
+              </Link>
+              <Link className="text-greenday">
+                <div className="flex flex-col justify-center items-center  text-center">
+                  <FaMoon className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-[9px] text-bluegreen">Ramadhan</div>
+                </div>
+              </Link>
+              <Link className="text-greenday">
+                <div className="flex flex-col justify-center items-center  text-center">
+                  <FaCalculator className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-[9px] text-bluegreen">
+                    Kalkulator Zakat
+                  </div>
+                </div>
+              </Link>
+              <Link className="text-greenday">
+                <div className="flex flex-col justify-center items-center  text-center">
+                  <GiPublicSpeaker className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-[9px] text-bluegreen">Khutbah</div>
+                </div>
+              </Link>
+              <Link className="text-greenday">
+                <div className="flex flex-col justify-center items-center  text-center">
+                  <MdOutlineMosque className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-[9px] text-bluegreen">Info Masjid</div>
                 </div>
               </Link>
             </div>
           </Tab>
           <Tab id={"tab-2"} tabActive={activeTab === 1}>
             <div className="grid grid-cols-4 gap-4  ">
-              <Link
-                className="text-primary"
-                href="/quran"
-                routeProps={{ Name: "asep" }}
-              >
-                <div className="flex flex-col justify-center items-center  text-center">
-                  <HiArchiveBox className="text-4xl bg-light rounded-lg p-1 mb-1" />
-                  <div className="text-xs">Shalata</div>
+              <Link className="text-greenday">
+                <div className="flex flex-col  justify-center items-center  text-center">
+                  <CgRing className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-[9px]  text-bluegreen flex-grow">
+                    Daftar Nikah Online
+                  </div>
                 </div>
               </Link>
-              <Link className="text-primary">
+              <Link className="text-greenday">
+                <div className="flex flex-col  justify-center items-center  text-center">
+                  <BiSolidBookReader className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-[9px]  text-bluegreen flex-grow">
+                    Panduan Pendaftaran
+                  </div>
+                </div>
+              </Link>
+              <Link className="text-greenday">
                 <div className="flex flex-col justify-center items-center  text-center">
-                  <HiBookOpen className="text-4xl bg-light rounded-lg p-1 mb-1" />
-                  <div className="text-xs">Al-Qur'an</div>
+                  <FaHandshake className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-[9px] text-bluegreen">
+                    Bacaan Ijab Qabul
+                  </div>
+                </div>
+              </Link>
+              <Link className="text-greenday">
+                <div className="flex flex-col justify-center items-center  text-center">
+                  <FaRegIdCard className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-[9px] text-bluegreen">
+                    Kartu Nikah Digital
+                  </div>
+                </div>
+              </Link>
+            </div>
+          </Tab>
+          <Tab id={"tab-3"} tabActive={activeTab === 2}>
+            <div className="grid grid-cols-4 gap-4  ">
+              <Link className="text-greenday">
+                <div className="flex flex-col  justify-center items-center  text-center">
+                  <CgRing className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-[9px]  text-bluegreen flex-grow">
+                    Wakaf
+                  </div>
+                </div>
+              </Link>
+              <Link className="text-greenday">
+                <div className="flex flex-col  justify-center items-center  text-center">
+                  <CgRing className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-[9px]  text-bluegreen flex-grow">
+                    Legalisir
+                  </div>
+                </div>
+              </Link>
+              <Link className="text-greenday">
+                <div className="flex flex-col  justify-center items-center  text-center">
+                  <CgRing className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-[9px]  text-bluegreen flex-grow">
+                    ID Masjid
+                  </div>
+                </div>
+              </Link>
+              <Link className="text-greenday">
+                <div className="flex flex-col  justify-center items-center  text-center">
+                  <CgRing className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-[9px]  text-bluegreen flex-grow">
+                    Cek Register
+                  </div>
+                </div>
+              </Link>
+              <Link className="text-greenday">
+                <div className="flex flex-col  justify-center items-center  text-center">
+                  <CgRing className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-[9px]  text-bluegreen flex-grow">
+                    Zakat
+                  </div>
                 </div>
               </Link>
             </div>

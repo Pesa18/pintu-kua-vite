@@ -75,13 +75,13 @@ const FormLogin = () => {
               expiresIn: 36000,
               authState: {
                 token: response.data.token,
-                uuid: response.data.uuid,
+                user: response.data.user,
               },
             });
 
-            history(`/${response.data.uuid}`);
+            history(`/${response.data.user.uuid}/`);
           } else {
-            if (response.data.verified) {
+            if (!response.data.verified) {
               return history(`/auth/otp/${response.data.uuid}`, {
                 state: {
                   email: response.data.email,
@@ -153,7 +153,7 @@ const FormLogin = () => {
                   type="email"
                   name="email"
                   id="email"
-                  className="  border-[2px] border-second invalid:focus:border-pink-800  dark:text-light bg-light bg-opacity-10 w-full text-third placeholder:text-light -ml-10 -mr-10  pl-10 pr-3 py-2 rounded-lg outline-none  focus:border-primary placeholder:text-sm "
+                  className="  border-[2px] focus:ring-primary border-light invalid:focus:border-pink-800  dark:text-light bg-light bg-opacity-10 w-full text-third placeholder:text-light -ml-10 -mr-10  pl-10 pr-3 py-2 rounded-lg outline-none  focus:border-primary placeholder:text-sm "
                   placeholder="Masukkan alamat email"
                 />
                 {isLogin && (
