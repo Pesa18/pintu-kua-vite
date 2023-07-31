@@ -15,6 +15,7 @@ import {
 import QuranJson from "../../helper/jsonQuran";
 import { TbChevronLeft } from "react-icons/tb";
 import { useState, useEffect } from "react";
+import ConvertToArabicNumbers from "../../helper/numberToarabic";
 const QuranPage = (props) => {
   const [surahData, setSurahData] = useState(null);
 
@@ -27,7 +28,6 @@ const QuranPage = (props) => {
     fetchQuranData();
   }, []);
 
-  console.log(surahData);
   return (
     <Page name="quran">
       <Navbar>
@@ -77,6 +77,8 @@ const QuranPage = (props) => {
                           " " +
                           `(${r.number_of_ayah} Ayat)`
                         }
+                        link="/detail-surah"
+                        routeProps={r}
                       >
                         <div
                           slot="media"
@@ -84,7 +86,7 @@ const QuranPage = (props) => {
                           style={{ backgroundImage: "url('/icons/ayat.svg')" }}
                         >
                           <div className="text-center text-sm text-third">
-                            {i}
+                            <ConvertToArabicNumbers num={i} />
                           </div>
                         </div>
                         <div slot="after" className="font-amiri">

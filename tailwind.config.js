@@ -9,6 +9,8 @@ export const theme = {
       comfortaa: "Comfortaa",
       poppins: "Poppins",
       quicksand: "Quicksand",
+      lateef: "Lateef",
+      kufi: "Reem Kufi",
     },
     colors: {
       primary: "#38a3a5",

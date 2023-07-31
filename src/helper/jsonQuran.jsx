@@ -1,6 +1,5 @@
 const QuranJson = async () => {
   const jsonFiles = import.meta.glob("./surah/*.json");
-  console.log(jsonFiles);
   const jsonQuran = {};
 
   for (const filename in jsonFiles) {
