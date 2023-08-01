@@ -67,7 +67,7 @@ export default function HomeView() {
             />
             <div className="text-primary text-xs">Home</div>
           </Link>
-          <Link href="quran" className="flex flex-col">
+          <Link href="/quran" className="flex flex-col">
             <img
               src="/icons/tabbar/wired-outline-112-book-morph.gif"
               className="h-8"

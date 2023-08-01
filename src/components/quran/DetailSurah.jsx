@@ -1,53 +1,74 @@
-import { Block, Card, List, ListItem, Navbar, Page } from "framework7-react";
+import {
+  Block,
+  BlockTitle,
+  Card,
+  Link,
+  List,
+  ListItem,
+  NavLeft,
+  NavRight,
+  Navbar,
+  Page,
+  Popover,
+  Range,
+} from "framework7-react";
 import ConvertToArabicNumbers from "../../helper/numberToarabic";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import {
   TbPlayerPauseFilled,
   TbPlayerPlayFilled,
   TbPlayerStopFilled,
+  TbSettings,
 } from "react-icons/tb";
 import ReactAudioPlayer from "react-audio-player";
 import { useRef, useState, useEffect } from "react";
 import axios from "axios";
 const DetailSurah = (props) => {
-  const [trackInterval, setTrackInterval] = useState(0);
-  const [intervalMax, setIntervalMax] = useState(0);
+  const [textQuran, setTextQuran] = useState(30);
+  const [textTranslation, setTextTranslation] = useState(15);
+  const [surahPlay, setSurahPlay] = useState(null);
   const [playAudio, setPlayAudio] = useState(false);
   const audioRef = useRef();
   const [audioQuran, setAudioQuran] = useState(null);
-  const playQuran = (number) => {
+  const playQuran = (number, surah) => {
     setAudioQuran(number);
+    setSurahPlay(surah);
+  };
+  const quranRef = useRef(null);
+  const onPause = () => {
+    setPlayAudio(false);
   };
   const onEnded = () => {
-    setAudioQuran("");
     setPlayAudio(false);
-    setTrackInterval(0);
+
+    if (surahPlay >= parseInt(props.number_of_ayah)) {
+      setAudioQuran("");
+      setPlayAudio(false);
+    } else {
+      setSurahPlay(surahPlay + 1);
+
+      setAudioQuran(String(parseInt(audioQuran, 10) + 1).padStart(6, "0"));
+    }
   };
   const onPlay = () => {
     setPlayAudio(true);
-    const interval = audioRef.current.listenTracker;
-    setIntervalMax(interval);
   };
-  useEffect(() => {
-    let intervalId;
 
-    if (playAudio) {
-      const interval = audioRef.current.listenTracker;
-      intervalId = setInterval(() => {
-        setTrackInterval((prevInterval) => prevInterval + 1);
-      }, interval);
-    }
-
-    return () => {
-      clearInterval(intervalId); // Clear interval saat komponen dibongkar (unmounted)
-    };
-  }, [playAudio]);
-  const handleChange = (e) => {
-    setTrackInterval(Number(e.target.value));
+  const quranTextValue = (e) => {
+    setTextQuran(e);
+  };
+  const translationTextValue = (e) => {
+    setTextTranslation(e);
   };
   return (
     <Page name="detail-surah">
-      <Navbar backLink title={props.name_latin}></Navbar>
+      <Navbar backLink title={props.name_latin}>
+        <NavRight>
+          <Link popoverOpen={".setting-popup"}>
+            <TbSettings className="text-2xl text-bluegreen mr-3" />
+          </Link>
+        </NavRight>
+      </Navbar>
       <div className="p-3 bg-bluegreen">
         <div className="flex flex-row justify-between items-center">
           <div className="text-white text-xs">{props.name_latin}</div>
@@ -61,17 +82,24 @@ const DetailSurah = (props) => {
         <List strongIos outlineIos dividersIos className="">
           {Object.values(props.text).map((s, i) => {
             return (
-              <ListItem key={i} className="font-lateef border-b mb-3 ">
+              <ListItem
+                key={i}
+                className={`font-lateef border-b mb-3 ${
+                  playAudio && surahPlay === i + 1 && "!bg-yellow-50"
+                }  `}
+              >
                 <div slot="media">
-                  {playAudio ? (
-                    <TbPlayerPauseFilled />
+                  {playAudio && surahPlay === i + 1 ? (
+                    <TbPlayerPauseFilled className="text-xl text-bluegreen" />
                   ) : (
                     <TbPlayerPlayFilled
+                      className="text-xl text-bluegreen"
                       onClick={() => {
                         playQuran(
                           `${String(props.number).padStart(3, "0")}${String(
                             i + 1
-                          ).padStart(3, "0")}`
+                          ).padStart(3, "0")}`,
+                          i + 1
                         );
                       }}
                     />
@@ -84,14 +112,24 @@ const DetailSurah = (props) => {
                         className="h-7 w-8 bg-contain bg-no-repeat bg-center flex justify-center items-center"
                         style={{ backgroundImage: "url('/icons/ayat.svg')" }}
                       >
-                        <div className="text-center text-xs text-third">
+                        <div className="text-center   text-xs text-third">
                           <ConvertToArabicNumbers num={i + 1} />
                         </div>
                       </div>
-                      <div className="">{s}</div>
+                      <div
+                        ref={quranRef}
+                        id={i + 1}
+                        style={{ fontSize: `${textQuran}px` }}
+                        className={`text-[${textQuran}px] w-full`}
+                      >
+                        {s}
+                      </div>
                     </div>
                   </div>
-                  <div className="w-full flex justify-end text-justify">
+                  <div
+                    style={{ fontSize: `${textTranslation}px` }}
+                    className={`w-full !text-[${textTranslation}px] flex justify-end text-justify`}
+                  >
                     {props.translations.id.text[i + 1]}
                   </div>
                 </div>
@@ -110,9 +148,67 @@ const DetailSurah = (props) => {
             ref={audioRef}
             onEnded={onEnded}
             preload="auto"
+            onPause={onPause}
           />
         )}
       </div>
+
+      <Popover className="setting-popup !bg-bluegreen  !bg-opacity-75 !px-2">
+        <Block>
+          <BlockTitle className="flex flex-row !text-white justify-between  p-2">
+            <div>Text Qur'an</div>
+            <div
+              style={{ fontSize: `${textQuran}px` }}
+              className={`font-lateef !text-[${textQuran}px]`}
+            >
+              بِسْمِ اللّٰهِ{" "}
+            </div>
+          </BlockTitle>
+          <List>
+            <ListItem>
+              <Range
+                onRangeChange={quranTextValue}
+                color="white"
+                className=""
+                min={20}
+                max={50}
+                label={true}
+                step={5}
+                value={textQuran}
+                scale={true}
+                scaleSteps={3}
+              ></Range>
+            </ListItem>
+          </List>
+        </Block>
+        <Block>
+          <BlockTitle className="flex flex-row  !text-white justify-between">
+            <div className="">Text Translate</div>
+            <div
+              style={{ fontSize: `${textTranslation}px` }}
+              className={`font-lateef !text-[${textTranslation}px]`}
+            >
+              Translate
+            </div>
+          </BlockTitle>
+          <List>
+            <ListItem>
+              <Range
+                color="white"
+                className=""
+                onRangeChange={translationTextValue}
+                min={10}
+                max={30}
+                label={true}
+                step={5}
+                value={textTranslation}
+                scale={true}
+                scaleSteps={4}
+              ></Range>
+            </ListItem>
+          </List>
+        </Block>
+      </Popover>
     </Page>
   );
 };
