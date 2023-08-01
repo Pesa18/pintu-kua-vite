@@ -7,10 +7,11 @@ import {
   TbPlayerStopFilled,
 } from "react-icons/tb";
 import ReactAudioPlayer from "react-audio-player";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import axios from "axios";
 const DetailSurah = (props) => {
-  const [trackInterval, setTrackInterval] = useState("0");
+  const [trackInterval, setTrackInterval] = useState(0);
+  const [intervalMax, setIntervalMax] = useState(0);
   const [playAudio, setPlayAudio] = useState(false);
   const audioRef = useRef();
   const [audioQuran, setAudioQuran] = useState(null);
@@ -18,14 +19,32 @@ const DetailSurah = (props) => {
     setAudioQuran(number);
   };
   const onEnded = () => {
+    setAudioQuran("");
     setPlayAudio(false);
+    setTrackInterval(0);
   };
   const onPlay = () => {
     setPlayAudio(true);
-    interval = audioRef.current.listenInterval;
-    setTrackInterval(interval);
+    const interval = audioRef.current.listenTracker;
+    setIntervalMax(interval);
   };
+  useEffect(() => {
+    let intervalId;
 
+    if (playAudio) {
+      const interval = audioRef.current.listenTracker;
+      intervalId = setInterval(() => {
+        setTrackInterval((prevInterval) => prevInterval + 1);
+      }, interval);
+    }
+
+    return () => {
+      clearInterval(intervalId); // Clear interval saat komponen dibongkar (unmounted)
+    };
+  }, [playAudio]);
+  const handleChange = (e) => {
+    setTrackInterval(Number(e.target.value));
+  };
   return (
     <Page name="detail-surah">
       <Navbar backLink title={props.name_latin}></Navbar>
@@ -44,15 +63,19 @@ const DetailSurah = (props) => {
             return (
               <ListItem key={i} className="font-lateef border-b mb-3 ">
                 <div slot="media">
-                  <HiOutlineDotsVertical
-                    onClick={() => {
-                      playQuran(
-                        `${String(props.number).padStart(3, "0")}${String(
-                          i + 1
-                        ).padStart(3, "0")}`
-                      );
-                    }}
-                  />
+                  {playAudio ? (
+                    <TbPlayerPauseFilled />
+                  ) : (
+                    <TbPlayerPlayFilled
+                      onClick={() => {
+                        playQuran(
+                          `${String(props.number).padStart(3, "0")}${String(
+                            i + 1
+                          ).padStart(3, "0")}`
+                        );
+                      }}
+                    />
+                  )}
                 </div>
                 <div className=" !p-0 w-full flex flex-col">
                   <div className="text-right text-2xl leading-relaxed w-full">
@@ -77,32 +100,19 @@ const DetailSurah = (props) => {
           })}
         </List>
       </Block>
-      <div className=" px-2 flex  flex-row items-center bg-primary rounded-xl fixed  bottom-20 h-10 z-50 w-1/4 left-1/2 transform -translate-x-1/2">
-        <input
-          id="default-range"
-          type="range"
-          value={trackInterval}
-          min={0}
-          max={trackInterval}
-          className="w-full h-1 bg-gray-200 rounded-lg cursor-pointer dark:bg-gray-700"
-        />
-
-        <div className="flex flex-row text-white">
-          {playAudio ? <TbPlayerPauseFilled /> : <TbPlayerPlayFilled />}
-          <TbPlayerStopFilled className="text-red-500" />
-        </div>
+      <div className=" px-2 flex  flex-row items-center  rounded-xl fixed  bottom-20 h-10 z-50  left-1/2 transform -translate-x-1/2">
+        {audioQuran && (
+          <ReactAudioPlayer
+            src={`https://verses.quran.com/Shatri/mp3/${audioQuran}.mp3`}
+            autoPlay
+            onPlay={onPlay}
+            controls
+            ref={audioRef}
+            onEnded={onEnded}
+            preload="auto"
+          />
+        )}
       </div>
-      {audioQuran && (
-        <ReactAudioPlayer
-          className="hidden"
-          src={`https://verses.quran.com/Shatri/mp3/${audioQuran}.mp3`}
-          autoPlay
-          onPlay={onPlay}
-          controls
-          ref={audioRef}
-          onEnded={onEnded}
-        />
-      )}
     </Page>
   );
 };
