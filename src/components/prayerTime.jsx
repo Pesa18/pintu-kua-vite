@@ -27,7 +27,7 @@ const PrayerTime = () => {
     ) => {
       try {
         const response = await axios.get(
-          `https://api.myquran.com/v1/sholat/jadwal/${kodeKab}/${year}/${month}/${day}`
+          `https://api.myquran.com/v2/sholat/jadwal/${kodeKab}/${year}/${month}/${day}`
         );
         const data = response.data.data;
 
