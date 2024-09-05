@@ -27,26 +27,8 @@ const HomePage = () => {
   const user = useAuthUser();
 
   const signOut = useSignOut();
-  const logOut = async () => {
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/logout`,
-        {
-          headers: {
-            accept: "application/json",
-            Authenticated: import.meta.env.VITE_API_KEY,
-            Authorization: `Bearer ${user().token}`,
-          },
-        }
-      );
-
-      if (response.data.success) {
-        signOut();
-        // window.location.reload();
-      }
-
-      return false;
-    } catch (error) {}
+  const logOut = () => {
+    signOut();
   };
 
   const [dataApp, setDataApp] = useState(null);
@@ -84,7 +66,18 @@ const HomePage = () => {
       onPageInit={f7.preloader.showIn("<Nabar></Navbar>")}
       className="!bg-primary"
     >
-      <Navbar transparent>
+      <Navbar
+        transparent
+        onNavbarTransparentShow={() => {
+          var bgNav = document.getElementsByClassName("navbar-bg");
+          for (var i = 0; i < bgNav.length; i++) {
+            bgNav[i].setAttribute(
+              "style",
+              "background-color: #38a3a5 !important;"
+            );
+          }
+        }}
+      >
         <NavLeft className="pl-3">
           {/* <TbLogin className="text-xl text-white" /> */}
           <div className="flex">

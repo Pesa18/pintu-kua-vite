@@ -14,7 +14,7 @@ export const checkEmail = async (email) => {
         },
       }
     );
-    const loginTrue = response.data.login;
+    const loginTrue = response.data.data.login;
     const fetchData = {
       status: true,
       data: loginTrue,

@@ -26,7 +26,8 @@ const FormLogin = () => {
   console.log(onVerification);
   function handleCallback(response) {
     const userData = jwt_decode(response.credential);
-    googleSign(userData.email);
+    console.log(userData);
+    const data = googleSign(userData.email);
   }
 
   const skemaValidasi = Yup.object().shape({
@@ -55,7 +56,7 @@ const FormLogin = () => {
         let password = values.password;
         try {
           const response = await axios.post(
-            `${import.meta.env.VITE_API_URL}/login`,
+            `${import.meta.env.VITE_API_URL}/auth/login`,
             {
               email,
               password,
@@ -67,19 +68,19 @@ const FormLogin = () => {
               },
             }
           );
-          if (response.data.login) {
+          if (response.data.data.login) {
             setOnVerification(false);
             LogIn({
-              token: response.data.token,
+              token: response.data.data.token,
               tokenType: "Bearer",
               expiresIn: 36000,
               authState: {
-                token: response.data.token,
-                user: response.data.user,
+                token: response.data.data.token,
+                user: response.data.data.user,
               },
             });
 
-            history(`/${response.data.user.uuid}/`);
+            history(`/${response.data.data.user.uuid}/`);
           } else {
             if (!response.data.verified) {
               return history(`/auth/otp/${response.data.uuid}`, {
