@@ -27,7 +27,25 @@ const FormLogin = () => {
   function handleCallback(response) {
     const userData = jwt_decode(response.credential);
     console.log(userData);
-    const data = googleSign(userData.email);
+    const data = googleSign(response).then((value) => {
+      console.log(value);
+
+      if (!value.data.login) {
+        return history("/auth/daftar", { state: value.data.email });
+      }
+
+      LogIn({
+        token: value.data.token,
+        tokenType: "Bearer",
+        expiresIn: 36000,
+        authState: {
+          token: value.data.token,
+          user: value.data.user,
+        },
+      });
+
+      history(`/${value.data.user.uuid}/`);
+    });
   }
 
   const skemaValidasi = Yup.object().shape({

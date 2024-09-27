@@ -1,13 +1,44 @@
-import { checkEmail } from "./LoginFetch";
+import axios from "axios";
+import { toast } from "react-toastify";
+export const googleSign = async (token) => {
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_URL}/auth/loginwithgoogle`,
+      {
+        token: token.credential,
+      },
+      {
+        headers: {
+          accept: "application/json",
+          Authenticated: import.meta.env.VITE_API_KEY,
+        },
+      }
+    );
 
-export const googleSign = (email) => {
-  console.log(email);
-
-  const dataEmail = checkEmail(email).then((value) => {
-    if (!value.status) {
-      return toast.error("Terjadi Kesalahan Verifikasi");
+    if (response.data.status === "Gagal") {
+      const responseData = {
+        status: response.data.status,
+        message: response.data.message,
+        data: {
+          login: false,
+          email: response.data.data.user.email,
+          uuid: response.data.data.uuid,
+        },
+      };
+      return responseData;
     }
-    return value.data;
-  });
-  return dataEmail;
+
+    const responseData = {
+      status: response.data.status,
+      message: "Berhasil mendapatkan akun",
+      data: {
+        login: true,
+        token: response.data.data.token,
+        user: response.data.data.user,
+      },
+    };
+    return responseData;
+  } catch (error) {
+    toast.error(`Terjadi Kesalahan Verifikasi error: ${error}`);
+  }
 };
