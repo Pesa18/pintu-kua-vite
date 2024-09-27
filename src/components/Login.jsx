@@ -82,11 +82,10 @@ const FormLogin = () => {
 
             history(`/${response.data.data.user.uuid}/`);
           } else {
-            if (!response.data.verified) {
-              return history(`/auth/otp/${response.data.uuid}`, {
+            if (!response.data.data.isVerified) {
+              return history(`/auth/otp/${response.data.data.user.uuid}`, {
                 state: {
-                  email: response.data.email,
-                  token: response.data.token,
+                  email: response.data.data.user.email,
                 },
               });
             }

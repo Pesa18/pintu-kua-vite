@@ -53,7 +53,7 @@ const FormRegistration = () => {
     initialValues: {
       email: variable,
       name: "",
-      no_telp: "",
+      phone: "",
       password: "",
       confirm_password: "",
     },
@@ -62,7 +62,7 @@ const FormRegistration = () => {
       setOnVerification(true);
       try {
         const response = await axios.post(
-          "http://apibimas.test/api/register",
+          `${import.meta.env.VITE_API_URL}/auth/register`,
           {
             values,
           },
