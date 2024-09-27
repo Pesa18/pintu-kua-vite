@@ -35,7 +35,7 @@ const FormRegistration = () => {
     // nik: Yup.string()
     //   .matches(/^\d{16}$/, "Number must be exactly 16 digits")
     //   .required("NIK wajib diisi"),
-    no_telp: Yup.string()
+    phone: Yup.string()
       .matches(/^[0-9]{10,12}$/, "No hp harus 10 atau 12 digit ")
       .required("No hp wajib diisi"),
     password: Yup.string()
@@ -74,15 +74,13 @@ const FormRegistration = () => {
           }
         );
 
-        if (!response.data.success) {
+        if (response.data.isExists) {
           setOnVerification(false);
-          toast.error("Terjadi kesalahan Verifikasi");
+          return formik.setErrors({ email: "Email Sudah Terdaftar" });
         }
-        return navigate(`/auth/otp/${response.data.data.uuid}`, {
+        return navigate(`/auth/otp/${response.data.data.user.uuid}`, {
           state: {
-            email: response.data.data.email,
-            token: response.data.data.token,
-            expire_otp: response.data.data.expire_otp,
+            email: response.data.data.user.email,
           },
         });
       } catch (error) {
@@ -166,17 +164,17 @@ const FormRegistration = () => {
                 onChange={(e) => {
                   formik.handleChange(e);
                 }}
-                value={formik.values.no_telp}
+                value={formik.values.phone}
                 type="text"
-                name="no_telp"
-                id="no_telp"
+                name="phone"
+                id="phone"
                 className="   border-[2px] border-second invalid:focus:border-pink-800  dark:text-light bg-light bg-opacity-10 w-full text-third placeholder:text-light -ml-10 -mr-10  pl-10 pr-3 py-1 rounded-lg outline-none  focus:border-primary placeholder:text-sm "
                 placeholder="No Hp yang aktif"
               />
             </div>
-            {formik.errors.no_telp && formik.touched.no_telp && (
+            {formik.errors.phone && formik.touched.phone && (
               <div className="text-xs px-1 mt-1 text-pink-800 dark:text-pink-500">
-                {formik.errors.no_telp} !
+                {formik.errors.phone} !
               </div>
             )}
           </div>
