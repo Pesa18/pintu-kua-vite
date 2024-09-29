@@ -80,7 +80,7 @@ const FormRegistration = () => {
         }
         return navigate(`/auth/otp/${response.data.data.user.uuid}`, {
           state: {
-            email: response.data.data.user.email,
+            uuid: response.data.data.user.uuid,
           },
         });
       } catch (error) {

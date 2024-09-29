@@ -103,7 +103,7 @@ const FormLogin = () => {
             if (!response.data.data.isVerified) {
               return history(`/auth/otp/${response.data.data.user.uuid}`, {
                 state: {
-                  email: response.data.data.user.email,
+                  uuid: response.data.data.user.uuid,
                 },
               });
             }

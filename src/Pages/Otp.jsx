@@ -26,13 +26,13 @@ export default function OtpPages() {
     validationSchema: skemaValidasi,
     onSubmit: async (values) => {
       setResend(true);
-      let email = location.state.email;
+      let uuid = location.state.uuid;
       let otp = values.otpvalue;
       try {
         const response = await axios.post(
-          "http://apibimas.test/api/email-verification",
+          `${import.meta.env.VITE_API_URL}/auth/verifyotp`,
           {
-            email,
+            uuid,
             otp,
           },
           {
@@ -44,16 +44,16 @@ export default function OtpPages() {
           }
         );
 
-        if (response.data.error) {
-          return setResend(false), toast.error(response.data.error.message);
+        if (!response.data.isverified) {
+          return setResend(false), toast.error(response.data.message);
         }
 
         setResend(false);
-        if (location.state.mode === "forgot-password") {
-          return navigate(`/auth/forgot-password/${params}`, {
-            state: { token: location.state.token },
-          });
-        }
+        // if (location.state.mode === "forgot-password") {
+        //   return navigate(`/auth/forgot-password/${params}`, {
+        //     state: { token: location.state.token },
+        //   });
+        // }
         return navigate("/auth");
       } catch (error) {
         setResend(false);
@@ -65,8 +65,11 @@ export default function OtpPages() {
   const resendOtp = async () => {
     setResend(true);
     try {
-      const response = await axios.get(
-        "http://apibimas.test/api/send-verification",
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/resendotp`,
+        {
+          uuid,
+        },
         {
           headers: {
             accept: "application/json",
