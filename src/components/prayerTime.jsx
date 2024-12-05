@@ -130,14 +130,14 @@ const PrayerTime = () => {
         <>
           <div className="flex items-center ">
             {" "}
-            <Toggle
+            {/* <Toggle
               defaultChecked
               color="teal"
               onChange={(e) => {
                 console.log(e);
               }}
             />
-            <div>Adzan</div>
+            <div>Adzan</div> */}
           </div>
           <div>Shalat {nextPrayer.shalat} </div>
           <div className=" text-xl font-bold">{nextPrayer.time} WIB</div>
@@ -149,7 +149,8 @@ const PrayerTime = () => {
               onComplete={() => {
                 setLoadShalat(true);
               }}
-            />{" "}
+            />
+            {` Menuju Shalat ${nextPrayer.shalat}`}
           </div>
         </>
       )}

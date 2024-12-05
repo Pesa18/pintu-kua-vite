@@ -104,6 +104,7 @@ const FormLogin = () => {
               return history(`/auth/otp/${response.data.data.user.uuid}`, {
                 state: {
                   uuid: response.data.data.user.uuid,
+                  email: response.data.data.user.email,
                 },
               });
             }

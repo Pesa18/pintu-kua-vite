@@ -64,11 +64,14 @@ export default function OtpPages() {
 
   const resendOtp = async () => {
     setResend(true);
+    formik.setFieldValue("otpvalue", "");
+    const { uuid, email } = state;
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/resendotp`,
         {
           uuid,
+          email,
         },
         {
           headers: {
@@ -79,12 +82,10 @@ export default function OtpPages() {
         }
       );
 
-      if (response.data.success) {
-        setExpireOtp(new Date().getTime() + 120000);
-        return setResend(false);
+      if (!response.data.success) {
+        return toast.error("Gagal Authentikasi");
       }
-
-      return null;
+      return setExpireOtp(new Date().getTime() + 120000), setResend(false);
     } catch (error) {
       toast.error("Gagal Authentikasi");
       setResend(false);

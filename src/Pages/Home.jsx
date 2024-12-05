@@ -38,7 +38,7 @@ const HomePage = () => {
     const fetchApp = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/mobile-app`,
+          `${import.meta.env.VITE_API_URL}/app/mobile`,
           {
             headers: {
               accept: "application/json",
@@ -47,8 +47,9 @@ const HomePage = () => {
             },
           }
         );
-        setInfoApp(response.data.banner);
-        setDataApp(response.data);
+        // setInfoApp(response.data.banner);
+        setDataApp(response.data.data);
+        setInfoApp(response.data.data.banner);
       } catch (error) {}
     };
 

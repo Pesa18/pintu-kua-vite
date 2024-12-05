@@ -7,15 +7,15 @@ export const DetailBerita = (props) => {
   return (
     <>
       <Page name="detail-berita">
-        <Navbar backLink title={props.judul} className="line-clamp-1"></Navbar>
+        <Navbar backLink title={props.title} className="line-clamp-1"></Navbar>
         <img
-          src={`http://bimasadmin.test/${props.foto_berita}`}
+          src={`${import.meta.env.VITE_APP_FILE + props.image}`}
           className="p-4 h-60 "
           alt=""
         />
         <div
           className="p-2"
-          dangerouslySetInnerHTML={createMarkup(props.body)}
+          dangerouslySetInnerHTML={createMarkup(props.content)}
         />
       </Page>
     </>

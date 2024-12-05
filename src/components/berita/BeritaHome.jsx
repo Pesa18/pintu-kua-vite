@@ -25,25 +25,27 @@ const HeadlineNews = ({ dataApp }) => {
         <div className="text-xs text-primary">Lihat Semua</div>
       </div>
       <Swiper slidesPerView={"auto"} spaceBetween={10} className=" !w-full  ">
-        {dataApp.headlines.map((item) => (
+        {dataApp.articles.map((item) => (
           <SwiperSlide className="!w-1/2 md:!w-1/3 !h-52 !mb-2" key={item.id}>
             {" "}
             <Card color="white" className="!mx-0 !mt-0 !mb-24  shadow-lg ">
               <Link href="/detail-berita" routeProps={item}>
-                <div className="!text-bluegreen">
+                <div className="!text-bluegreen ">
                   <CardHeader
-                    className="!relative !mx-3  !top-2 !rounded-lg !h-28  !bg-cover"
+                    className="!relative !mx-3   !top-2 !rounded-lg !h-28  !bg-cover"
                     valign="bottom"
                     style={{
-                      backgroundImage: `url(http://bimasadmin.test/${item.foto_berita})`,
+                      backgroundImage: `url(${
+                        import.meta.env.VITE_APP_FILE + item.image
+                      })`,
                     }}
                   >
                     <div className="bg-bluegreen text-white py-0.5 px-1 text-[9px] rounded-lg absolute top-2 left-1 ">
-                      {item.kategori.nama_kategori}
+                      {item.categories.name}
                     </div>
                   </CardHeader>
-                  <CardContent>
-                    <p className="date line-clamp-2">{item.judul}</p>
+                  <CardContent className="w-full">
+                    <p className="date line-clamp-2">{item.title}</p>
                   </CardContent>
                 </div>
               </Link>

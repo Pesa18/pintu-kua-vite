@@ -13,6 +13,7 @@ import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 import { MdArrowForwardIos } from "react-icons/md";
 
 export const InfoGraph = ({ banner }) => {
+  console.log({ banner });
   const pagination = {
     clickable: true,
     renderBullet: function (index, className) {
@@ -38,7 +39,7 @@ export const InfoGraph = ({ banner }) => {
         {banner.map((item) => (
           <SwiperSlide className=" !w-[80%] !h-40" key={item.id}>
             <img
-              src={`http://bimasadmin.test/${item.foto_berita}`}
+              src={`${import.meta.env.VITE_APP_FILE + item.image_path}`}
               alt=""
               className=" !object-cover w-full !h-36 rounded-xl"
             />
