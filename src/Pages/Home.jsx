@@ -15,8 +15,8 @@ import { TbBell } from "react-icons/tb";
 import { ShalatCard } from "../components/shalatCard";
 import { MenuHome } from "../components/menuHome";
 import { InfoGraph, InfoKlik, SkeletonBanner } from "../components/info";
-import { useSignOut } from "react-auth-kit";
-import { useAuthUser } from "react-auth-kit";
+import useSignOut from "react-auth-kit/hooks/useSignOut";
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import HeadlineNews, {
   SkletonHeadlines,
 } from "../components/berita/BeritaHome";
@@ -29,6 +29,7 @@ const HomePage = () => {
   const signOut = useSignOut();
   const logOut = () => {
     signOut();
+    window.location.reload();
   };
 
   const [dataApp, setDataApp] = useState(null);
@@ -43,7 +44,7 @@ const HomePage = () => {
             headers: {
               accept: "application/json",
               Authenticated: import.meta.env.VITE_API_KEY,
-              Authorization: `Bearer ${user().token}`,
+              Authorization: `Bearer ${user.token}`,
             },
           }
         );
@@ -88,7 +89,7 @@ const HomePage = () => {
             ></div>
             <div className="flex text-white flex-col ml-2 justify-center">
               <div className="text-xs ">Assalamualaikum..👏</div>
-              <div className="text-sm  font-bold">{user().user.name}</div>
+              <div className="text-sm  font-bold">{user.user.name}</div>
             </div>
           </div>
         </NavLeft>

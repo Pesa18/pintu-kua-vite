@@ -5,18 +5,15 @@ import FormRegistration from "./components/Registration";
 import HomeView from "./Pages/HomeView";
 import OtpPages from "./Pages/Otp";
 import NotFound from "./Pages/Notfound404";
-import { RequireAuth, useIsAuthenticated, useAuthUser } from "react-auth-kit";
+import RequireAuth from "@auth-kit/react-router/RequireAuth";
 import LupaPassword from "./Pages/ForgotPwd";
 function App() {
-  const isAuthenticated = useIsAuthenticated();
-  const user = useAuthUser();
-
   return (
     <Routes>
       <Route
         path="/:uuid"
         element={
-          <RequireAuth loginPath="/auth">
+          <RequireAuth fallbackPath={"/auth"}>
             <HomeView />
           </RequireAuth>
         }

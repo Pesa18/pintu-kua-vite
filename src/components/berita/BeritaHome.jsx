@@ -29,10 +29,14 @@ const HeadlineNews = ({ dataApp }) => {
           <SwiperSlide className="!w-1/2 md:!w-1/3 !h-52 !mb-2" key={item.id}>
             {" "}
             <Card color="white" className="!mx-0 !mt-0 !mb-24  shadow-lg ">
-              <Link href="/detail-berita" routeProps={item}>
-                <div className="!text-bluegreen ">
+              <Link
+                href="/detail-berita"
+                className="w-full overflow-hidden"
+                routeProps={item}
+              >
+                <div className="!text-bluegreen w-full ">
                   <CardHeader
-                    className="!relative !mx-3   !top-2 !rounded-lg !h-28  !bg-cover"
+                    className=" !mx-3 w-full  !top-2 !rounded-lg !h-28   !bg-cover"
                     valign="bottom"
                     style={{
                       backgroundImage: `url(${
@@ -44,7 +48,7 @@ const HeadlineNews = ({ dataApp }) => {
                       {item.categories.name}
                     </div>
                   </CardHeader>
-                  <CardContent className="w-full">
+                  <CardContent className="">
                     <p className="date line-clamp-2">{item.title}</p>
                   </CardContent>
                 </div>

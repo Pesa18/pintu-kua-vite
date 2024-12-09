@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import "./assets/css/app.css";
 import Login from "./Pages/Login";
 import { redirect, useNavigate } from "react-router";
-import { useIsAuthenticated } from "react-auth-kit";
+import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
 
 const Auth = () => {
   const isAuthenticated = useIsAuthenticated();
@@ -18,12 +18,12 @@ const Auth = () => {
     }
   };
   useEffect(() => {
-    if (isAuthenticated()) {
+    if (isAuthenticated) {
       navigate("/");
     }
   }, []);
 
-  if (isAuthenticated()) {
+  if (isAuthenticated) {
     return null;
   }
   return <Login darkMode={isDarkMode} />;

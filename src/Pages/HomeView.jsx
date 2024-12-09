@@ -1,12 +1,8 @@
 import Framework7 from "framework7/lite/bundle";
 import Framework7React from "framework7-react";
-import { f7, f7ready, App, View, Toolbar, Link } from "framework7-react";
+import { f7ready, App, View, Toolbar, Link } from "framework7-react";
 import routes from "../Routes/Routes";
-import { useEffect, useRef } from "react";
-import { useNavigate, useLocation, useParams } from "react-router";
-import { useSignOut } from "react-auth-kit";
-import axios from "axios";
-import { useAuthUser } from "react-auth-kit";
+import { useParams } from "react-router";
 import { setItem, getItem, removeItem } from "../components/storageUtils";
 
 const f7params = {
@@ -19,11 +15,7 @@ Framework7.use(Framework7React);
 
 export default function HomeView() {
   let { uuid } = useParams();
-  const user = useAuthUser();
-  const location = useLocation();
-  const navigate = useNavigate();
 
-  const LogOut = useSignOut();
   f7ready(() => {
     import("framework7/css/bundle");
   });

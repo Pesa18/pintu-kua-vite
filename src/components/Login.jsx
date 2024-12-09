@@ -10,7 +10,7 @@ import { replace, useFormik } from "formik";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { checkEmail } from "../Auth/LoginFetch";
-import { useSignIn } from "react-auth-kit";
+import useSignIn from "react-auth-kit/hooks/useSignIn";
 import axios from "axios";
 
 const FormLogin = () => {
@@ -35,14 +35,23 @@ const FormLogin = () => {
       }
 
       LogIn({
-        token: value.data.token,
-        tokenType: "Bearer",
-        expiresIn: 36000,
-        authState: {
+        auth: {
           token: value.data.token,
-          user: value.data.user,
+          type: "Bearer",
         },
+        refresh: value.data.token,
+        userState: value.data,
       });
+
+      // LogIn({
+      //   token: value.data.token,
+      //   tokenType: "Bearer",
+      //   expiresIn: 36000,
+      //   authState: {
+      //     token: value.data.token,
+      //     user: value.data.user,
+      //   },
+      // });
 
       history(`/${value.data.user.uuid}/`);
     });
