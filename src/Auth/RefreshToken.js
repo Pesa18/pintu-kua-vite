@@ -1,4 +1,5 @@
 import createRefresh from "react-auth-kit/createRefresh";
+import axios from "axios";
 
 const refresh = createRefresh({
   interval: 10,
@@ -12,7 +13,7 @@ const refresh = createRefresh({
         isSuccess: true,
         newAuthToken: response.data.token,
         newAuthTokenExpireIn: 10,
-        newRefreshTokenExpiresIn: 60,
+        newRefreshTokenExpiresIn: 10,
       };
     } catch (error) {
       console.error(error);
@@ -22,5 +23,4 @@ const refresh = createRefresh({
     }
   },
 });
-
 export default refresh;

@@ -43,16 +43,6 @@ const FormLogin = () => {
         userState: value.data,
       });
 
-      // LogIn({
-      //   token: value.data.token,
-      //   tokenType: "Bearer",
-      //   expiresIn: 36000,
-      //   authState: {
-      //     token: value.data.token,
-      //     user: value.data.user,
-      //   },
-      // });
-
       history(`/${value.data.user.uuid}/`);
     });
   }
@@ -98,13 +88,12 @@ const FormLogin = () => {
           if (response.data.data.login) {
             setOnVerification(false);
             LogIn({
-              token: response.data.data.token,
-              tokenType: "Bearer",
-              expiresIn: 36000,
-              authState: {
+              auth: {
                 token: response.data.data.token,
-                user: response.data.data.user,
+                type: "Bearer",
               },
+              refresh: response.data.data.token,
+              userState: response.data.data,
             });
 
             history(`/${response.data.data.user.uuid}/`);

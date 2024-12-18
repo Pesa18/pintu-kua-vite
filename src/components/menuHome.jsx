@@ -21,7 +21,7 @@ import { BiSolidBookReader } from "react-icons/bi";
 import { CgRing } from "react-icons/cg";
 import { useState, useEffect } from "react";
 
-export const MenuHome = () => {
+export const MenuHome = (kota) => {
   const [activeTab, setActiveTab] = useState(0);
   return (
     <>
@@ -65,7 +65,7 @@ export const MenuHome = () => {
         <Tabs animated>
           <Tab id={"tab-1"} tabActive={activeTab === 0}>
             <div className="grid grid-cols-4 gap-4  ">
-              <Link href="shalat" className="text-greenday">
+              <Link href="shalat" className="text-greenday" routeProps={kota}>
                 <div className="flex flex-col justify-center items-center  text-center">
                   <HiClock className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
                   <div className="text-[9px] text-bluegreen">Jadwal Shalat</div>

@@ -32,8 +32,62 @@ const HomePage = () => {
     window.location.reload();
   };
 
+  const getIdKota = async (kota) => {
+    try {
+      const response = await axios.get(
+        `https://api.myquran.com/v2/sholat/kota/cari/${kota}`
+      );
+      setLocation({
+        id: response.data.data[0].id,
+        lokasi: response.data.data[0].lokasi,
+      });
+      console.log(response.data.data[0].id);
+    } catch (error) {
+      console.log("error");
+    }
+  };
+
+  const getAddress = async (data) => {
+    try {
+      const response = await axios.get(
+        `https://api.opencagedata.com/geocode/v1/json?q=${data.latitude}%2C${data.longitude}&key=3a53c6738bee456ba50dc02aa0ad0878`,
+        { headers: { accept: "application/json" } }
+      );
+      console.log(response.data.results[0].components.county);
+
+      await getIdKota(
+        response.data.results[0].components.city ??
+          response.data.results[0].components.county
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+
+          getAddress({ longitude, latitude });
+        },
+        (error) => {
+          alert("error");
+          console.error("Error getting location:", error.message);
+        }
+      );
+    } else {
+      alert("tidak support");
+      console.error("Geolocation is not supported by this browser.");
+    }
+  };
+
   const [dataApp, setDataApp] = useState(null);
   const [infoApp, setInfoApp] = useState(null);
+  const [location, setLocation] = useState(null);
 
   useEffect(() => {
     const fetchApp = async () => {
@@ -53,6 +107,7 @@ const HomePage = () => {
         setInfoApp(response.data.data.banner);
       } catch (error) {}
     };
+    getLocation();
 
     fetchApp();
   }, []);
@@ -88,7 +143,7 @@ const HomePage = () => {
               style={{ backgroundImage: "url('/images/avatar-1.jpg')" }}
             ></div>
             <div className="flex text-white flex-col ml-2 justify-center">
-              <div className="text-xs ">Assalamualaikum..👏</div>
+              <div className="text-xs ">Hallo👏</div>
               <div className="text-sm  font-bold">{user.user.name}</div>
             </div>
           </div>
@@ -104,11 +159,11 @@ const HomePage = () => {
       </Navbar>
       <div className="h-52   px-3">
         <div className="w-full h-full flex justify-center relative items-center overflow-hidden">
-          <ShalatCard />
+          <ShalatCard kota={location} />
         </div>
       </div>
       <div className="w-full dark:bg-teal-950 bg-white mt-2 rounded-t-2xl ">
-        <MenuHome />
+        <MenuHome kota={location} />
         <div className="p-1 !bg-slate-100 my-2"></div>
 
         {infoApp ? <InfoGraph banner={infoApp} /> : <SkeletonBanner />}

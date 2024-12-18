@@ -1,7 +1,7 @@
 import { Block } from "framework7-react";
 import PrayerTime from "./prayerTime";
 
-export const ShalatCard = () => {
+export const ShalatCard = ({ kota }) => {
   return (
     <>
       <Block
@@ -46,7 +46,7 @@ export const ShalatCard = () => {
         />
 
         <div className="flex flex-col justify-between h-full text-white mix-blend-screen">
-          <PrayerTime />
+          <PrayerTime dataKota={kota} />
         </div>
       </Block>
       <div className="absolute z-50  -top-9 -right-10">
