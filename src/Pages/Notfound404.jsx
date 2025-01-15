@@ -9,7 +9,7 @@ const NotFound = () => {
     if (user) {
       navigate(`/${user.user.uuid}/`);
     } else {
-      navigate("/auth");
+      navigate("/");
     }
   }, []);
   return <div>Not Found</div>;

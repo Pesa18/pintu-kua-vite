@@ -14,46 +14,63 @@ import {
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import moment from "moment";
+import "moment/dist/locale/id";
+
+moment.localeData("id");
 
 const HeadlineNews = ({ dataApp }) => {
   return (
-    <div className="px-2 pt-3  bg-slate-100">
+    <div className="px-2 pt-3  bg-slate-100  ">
       <div className="flex flex-row justify-between items-center mb-3">
         <div className="  font-semibold ">
-          <span className=" bg-greenday p-0.5 mr-1"></span>Berita
+          <span className=" bg-greenday p-0.5 mr-1"></span>Artikel & Berita
         </div>
-        <div className="text-xs text-primary">Lihat Semua</div>
+        <Link href="berita">
+          <div className="text-xs text-primary">Lihat Semua</div>
+        </Link>
       </div>
       <Swiper slidesPerView={"auto"} spaceBetween={10} className=" !w-full  ">
         {dataApp.articles.map((item) => (
-          <SwiperSlide className="!w-1/2 md:!w-1/3 !h-52 !mb-2" key={item.id}>
+          <SwiperSlide
+            className="!w-2/3 md:!w-1/3 !h-60 !mb-44"
+            key={item.uuid}
+          >
             {" "}
-            <Card color="white" className="!mx-0 !mt-0 !mb-24  shadow-lg ">
-              <Link
-                href="/detail-berita"
-                className="w-full overflow-hidden"
-                routeProps={item}
+            <Link
+              href={`/berita/${item.slug}`}
+              className="w-full h-full mt-10"
+              routeProps={item}
+              external
+            >
+              <Card
+                color="white"
+                className="!mx-0 !mt-0 !h-full !w-full   shadow-lg "
               >
-                <div className="!text-bluegreen w-full ">
-                  <CardHeader
-                    className=" !mx-3 w-full  !top-2 !rounded-lg !h-28   !bg-cover"
-                    valign="bottom"
-                    style={{
-                      backgroundImage: `url(${
-                        import.meta.env.VITE_APP_FILE + item.image
-                      })`,
-                    }}
-                  >
-                    <div className="bg-bluegreen text-white py-0.5 px-1 text-[9px] rounded-lg absolute top-2 left-1 ">
-                      {item.categories.name}
-                    </div>
-                  </CardHeader>
-                  <CardContent className="">
-                    <p className="date line-clamp-2">{item.title}</p>
-                  </CardContent>
-                </div>
-              </Link>
-            </Card>
+                <CardHeader
+                  className="!h-2/3 !bg-cover bg-center !bg-no-repeat "
+                  valign="bottom"
+                  style={{
+                    backgroundImage: `url(${
+                      import.meta.env.VITE_APP_FILE + item.image
+                    })`,
+                  }}
+                >
+                  <div className="bg-bluegreen text-white py-0.5 px-1 text-[9px] rounded-lg absolute top-2 left-1 ">
+                    {item.categories.name}
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-[10px] font-extralight">
+                    {moment(item.published_at).format("D MMMM YYYY")}
+                  </div>
+                  <div className="line-clamp-1">{item.title}</div>
+                  <div className="font-extralight text-xs line-clamp-2">
+                    {item.description}
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
           </SwiperSlide>
         ))}
       </Swiper>

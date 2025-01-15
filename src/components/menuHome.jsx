@@ -1,16 +1,9 @@
 import { Button, Link, Segmented, Tab, Tabs } from "framework7-react";
-import {
-  HiAcademicCap,
-  HiArchiveBox,
-  HiBookOpen,
-  HiClock,
-  HiUser,
-} from "react-icons/hi2";
-
+import { HiBookOpen, HiClock } from "react-icons/hi2";
+import { GiCalculator } from "react-icons/gi";
 import {
   FaRegCompass,
   FaKaaba,
-  FaMoon,
   FaCalculator,
   FaHandshake,
   FaRegIdCard,
@@ -62,91 +55,109 @@ export const MenuHome = (kota) => {
           </Button>
         </Segmented>
 
-        <Tabs animated>
+        <Tabs swipeable>
           <Tab id={"tab-1"} tabActive={activeTab === 0}>
             <div className="grid grid-cols-4 gap-4  ">
-              <Link href="shalat" className="text-greenday" routeProps={kota}>
-                <div className="flex flex-col justify-center items-center  text-center">
-                  <HiClock className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
-                  <div className="text-[9px] text-bluegreen">Jadwal Shalat</div>
+              <Link
+                href="shalat"
+                className="text-greenday h-full "
+                routeProps={kota}
+              >
+                <div className="flex flex-col h-full justify-between items-center  text-center">
+                  <HiClock className="text-4xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-xs font-semibold text-bluegreen">
+                    Jadwal Shalat
+                  </div>
                 </div>
               </Link>
-              <Link href="quran" className="text-greenday">
-                <div className="flex flex-col justify-center items-center  text-center">
-                  <HiBookOpen className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
-                  <div className="text-[9px] text-bluegreen">Al-Qur'an</div>
+              <Link href="quran" className="text-greenday h-full">
+                <div className="flex flex-col h-full justify-between items-center  text-center">
+                  <HiBookOpen className="text-4xl bg-bluegreen rounded-lg p-1 mb-1  " />
+                  <div className="text-xs font-semibold text-bluegreen flex-1">
+                    Al-Qur'an
+                  </div>
                 </div>
               </Link>
-              <Link className="text-greenday">
-                <div className="flex flex-col justify-center items-center  text-center">
-                  <FaRegCompass className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
-                  <div className="text-[9px] text-bluegreen">Qiblat</div>
+              <Link className="text-greenday h-full">
+                <div className="flex flex-col h-full justify-between items-center  text-center">
+                  <FaRegCompass className="text-4xl bg-bluegreen rounded-xl p-1 mb-1" />
+                  <div className="text-xs font-semibold text-bluegreen flex-1">
+                    Qiblat
+                  </div>
                 </div>
               </Link>
-              <Link className="text-greenday">
-                <div className="flex flex-col justify-center items-center  text-center">
-                  <FaKaaba className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
-                  <div className="text-[9px] text-bluegreen">Haji</div>
+              <Link className="text-greenday h-full" href="haji">
+                <div className="flex flex-col h-full justify-between items-center  text-center">
+                  <FaKaaba className="text-4xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-xs font-semibold text-bluegreen flex-1">
+                    Haji
+                  </div>
                 </div>
               </Link>
-              <Link className="text-greenday">
-                <div className="flex flex-col justify-center items-center  text-center">
-                  <FaMoon className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
-                  <div className="text-[9px] text-bluegreen">Ramadhan</div>
+              <Link className="text-greenday h-full">
+                <div className="flex flex-col h-full justify-between items-center  text-center">
+                  <GiCalculator className="text-4xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-xs font-semibold text-bluegreen flex-1">
+                    Kalkulator Waris
+                  </div>
                 </div>
               </Link>
-              <Link className="text-greenday">
-                <div className="flex flex-col justify-center items-center  text-center">
-                  <FaCalculator className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
-                  <div className="text-[9px] text-bluegreen">
+              <Link className="text-greenday h-full">
+                <div className="flex flex-col h-full justify-between items-center  text-center">
+                  <FaCalculator className="text-4xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-xs font-semibold text-bluegreen flex-1">
                     Kalkulator Zakat
                   </div>
                 </div>
               </Link>
-              <Link className="text-greenday">
-                <div className="flex flex-col justify-center items-center  text-center">
-                  <GiPublicSpeaker className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
-                  <div className="text-[9px] text-bluegreen">Khutbah</div>
+              <Link className="text-greenday h-full">
+                <div className="flex flex-col h-full justify-between items-center  text-center">
+                  <GiPublicSpeaker className="text-4xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-xs font-semibold text-bluegreen flex-1">
+                    Khutbah
+                  </div>
                 </div>
               </Link>
-              <Link className="text-greenday">
-                <div className="flex flex-col justify-center items-center  text-center">
-                  <MdOutlineMosque className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
-                  <div className="text-[9px] text-bluegreen">Info Masjid</div>
+              <Link className="text-greenday h-full" href="masjid">
+                <div className="flex flex-col h-full justify-between items-center  text-center">
+                  <MdOutlineMosque className="text-4xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-xs text-bluegreen font-semibold flex-1">
+                    Info Masjid
+                  </div>
                 </div>
               </Link>
             </div>
           </Tab>
           <Tab id={"tab-2"} tabActive={activeTab === 1}>
             <div className="grid grid-cols-4 gap-4  ">
-              <Link className="text-greenday">
-                <div className="flex flex-col  justify-center items-center  text-center">
-                  <CgRing className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
-                  <div className="text-[9px]  text-bluegreen flex-grow">
+              <Link className="text-greenday h-full">
+                <div className="flex flex-col  h-full justify-between items-center  text-center">
+                  <CgRing className="text-4xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-xs  text-bluegreen  font-semibold">
                     Daftar Nikah Online
                   </div>
                 </div>
               </Link>
-              <Link className="text-greenday">
-                <div className="flex flex-col  justify-center items-center  text-center">
-                  <BiSolidBookReader className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
-                  <div className="text-[9px]  text-bluegreen flex-grow">
+              <Link className="text-greenday h-full">
+                <div className="flex flex-col  h-full justify-between items-center  text-center">
+                  <BiSolidBookReader className="text-4xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-xs font-semibold  text-bluegreen flex-grow">
                     Panduan Pendaftaran
                   </div>
                 </div>
               </Link>
-              <Link className="text-greenday">
-                <div className="flex flex-col justify-center items-center  text-center">
-                  <FaHandshake className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
-                  <div className="text-[9px] text-bluegreen">
+              <Link className="text-greenday h-full">
+                <div className="flex flex-col h-full justify-between items-center  text-center">
+                  <FaHandshake className="text-4xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-xs font-semibold text-bluegreen">
                     Bacaan Ijab Qabul
                   </div>
                 </div>
               </Link>
-              <Link className="text-greenday">
-                <div className="flex flex-col justify-center items-center  text-center">
-                  <FaRegIdCard className="text-3xl bg-bluegreen rounded-lg p-1 mb-1" />
-                  <div className="text-[9px] text-bluegreen">
+              <Link className="text-greenday h-full">
+                <div className="flex flex-col h-full justify-between items-center  text-center">
+                  <FaRegIdCard className="text-4xl bg-bluegreen rounded-lg p-1 mb-1" />
+                  <div className="text-xs font-semibold text-bluegreen">
                     Kartu Nikah Digital
                   </div>
                 </div>

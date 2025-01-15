@@ -21,6 +21,8 @@ import {
   TbSettings,
 } from "react-icons/tb";
 import ReactAudioPlayer from "react-audio-player";
+import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
 import { useRef, useState, useEffect } from "react";
 import axios from "axios";
 const DetailSurah = (props) => {
@@ -34,7 +36,13 @@ const DetailSurah = (props) => {
     setAudioQuran(number);
     setSurahPlay(surah);
   };
-  const quranRef = useRef(null);
+  const quranRef = useRef([]);
+  const scrollToTarget = (index) => {
+    quranRef.current[index]?.scrollIntoView({
+      behavior: "smooth", // Efek scroll yang halus
+      block: "center", // Posisi elemen (start, center, end)
+    });
+  };
   const onPause = () => {
     setPlayAudio(false);
   };
@@ -48,10 +56,12 @@ const DetailSurah = (props) => {
       setSurahPlay(surahPlay + 1);
 
       setAudioQuran(String(parseInt(audioQuran, 10) + 1).padStart(6, "0"));
+      scrollToTarget(surahPlay);
     }
   };
   const onPlay = () => {
     setPlayAudio(true);
+    scrollToTarget(surahPlay - 1);
   };
 
   const quranTextValue = (e) => {
@@ -62,17 +72,22 @@ const DetailSurah = (props) => {
   };
   return (
     <Page name="detail-surah">
-      <Navbar backLink title={props.name_latin}>
+      <Navbar
+        backLink
+        title={props.name_latin}
+        innerClass="!bg-second !text-white"
+        textColor="white"
+      >
         <NavRight>
           <Link popoverOpen={".setting-popup"}>
-            <TbSettings className="text-2xl text-bluegreen mr-3" />
+            <TbSettings className="text-2xl text-white mr-3" />
           </Link>
         </NavRight>
       </Navbar>
-      <div className="p-3 bg-bluegreen">
+      <div className="p-3 bg-second rounded-b-xl">
         <div className="flex flex-row justify-between items-center">
           <div className="text-white text-xs">{props.name_latin}</div>
-          <div className="p-2 bg-white text-md font-kufi rounded-full">
+          <div className="p-2 bg-white text-md font-lateef text-xl rounded-full">
             بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ
           </div>
           <div className="text-white font-amiri">{props.name}</div>
@@ -117,7 +132,8 @@ const DetailSurah = (props) => {
                         </div>
                       </div>
                       <div
-                        ref={quranRef}
+                        ref={(el) => (quranRef.current[i] = el)}
+                        key={i + 1}
                         id={i + 1}
                         style={{ fontSize: `${textQuran}px` }}
                         className={`text-[${textQuran}px] w-full`}
@@ -138,11 +154,22 @@ const DetailSurah = (props) => {
           })}
         </List>
       </Block>
-      <div className=" px-2 flex  flex-row items-center  rounded-xl fixed  bottom-20 h-10 z-50  left-1/2 transform -translate-x-1/2">
+      <div className=" px-2 flex  flex-row items-center  rounded-xl fixed  bottom-20 h-10 z-50 w-full left-1/2 transform -translate-x-1/2">
         {audioQuran && (
-          <ReactAudioPlayer
+          // <ReactAudioPlayer
+          //   src={`https://verses.quran.com/Shatri/mp3/${audioQuran}.mp3`}
+          //   autoPlay
+          //   onPlay={onPlay}
+          //   controls
+          //   ref={audioRef}
+          //   onEnded={onEnded}
+          //   preload="auto"
+          //   onPause={onPause}
+          // />
+          <AudioPlayer
             src={`https://verses.quran.com/Shatri/mp3/${audioQuran}.mp3`}
             autoPlay
+            showSkipControls={true}
             onPlay={onPlay}
             controls
             ref={audioRef}

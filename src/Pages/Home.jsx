@@ -10,8 +10,9 @@ import {
   BlockTitle,
   PageContent,
   Button,
+  Panel,
 } from "framework7-react";
-import { TbBell } from "react-icons/tb";
+import { TbBell, TbLogin2 } from "react-icons/tb";
 import { ShalatCard } from "../components/shalatCard";
 import { MenuHome } from "../components/menuHome";
 import { InfoGraph, InfoKlik, SkeletonBanner } from "../components/info";
@@ -22,15 +23,11 @@ import HeadlineNews, {
 } from "../components/berita/BeritaHome";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
-const HomePage = () => {
+const HomePage = ({ f7router }) => {
   const user = useAuthUser();
-
-  const signOut = useSignOut();
-  const logOut = () => {
-    signOut();
-    window.location.reload();
-  };
+  const navigate = useNavigate();
 
   const getIdKota = async (kota) => {
     try {
@@ -41,9 +38,8 @@ const HomePage = () => {
         id: response.data.data[0].id,
         lokasi: response.data.data[0].lokasi,
       });
-      console.log(response.data.data[0].id);
     } catch (error) {
-      console.log("error");
+      toast.error("Ada Kesalahan");
     }
   };
 
@@ -53,14 +49,13 @@ const HomePage = () => {
         `https://api.opencagedata.com/geocode/v1/json?q=${data.latitude}%2C${data.longitude}&key=3a53c6738bee456ba50dc02aa0ad0878`,
         { headers: { accept: "application/json" } }
       );
-      console.log(response.data.results[0].components.county);
 
       await getIdKota(
         response.data.results[0].components.city ??
           response.data.results[0].components.county
       );
     } catch (error) {
-      console.log(error);
+      toast.error("Ada Kesalahan");
     }
   };
 
@@ -70,8 +65,6 @@ const HomePage = () => {
         (position) => {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
-          console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-
           getAddress({ longitude, latitude });
         },
         (error) => {
@@ -80,8 +73,7 @@ const HomePage = () => {
         }
       );
     } else {
-      alert("tidak support");
-      console.error("Geolocation is not supported by this browser.");
+      toast.error("Geolocation is not supported by this browser");
     }
   };
 
@@ -98,14 +90,15 @@ const HomePage = () => {
             headers: {
               accept: "application/json",
               Authenticated: import.meta.env.VITE_API_KEY,
-              Authorization: `Bearer ${user.token}`,
             },
           }
         );
         // setInfoApp(response.data.banner);
         setDataApp(response.data.data);
         setInfoApp(response.data.data.banner);
-      } catch (error) {}
+      } catch (error) {
+        toast.error("Ada Kesalahan");
+      }
     };
     getLocation();
 
@@ -114,10 +107,11 @@ const HomePage = () => {
 
   return (
     <Page
+      id="panel-page"
       name="home"
       ptr
       onPtrRefresh={() => {
-        window.location.reload();
+        f7.views.main.router.refreshPage();
       }}
       ptrMousewheel={true}
       onPageInit={f7.preloader.showIn("<Nabar></Navbar>")}
@@ -136,34 +130,54 @@ const HomePage = () => {
         }}
       >
         <NavLeft className="pl-3">
-          {/* <TbLogin className="text-xl text-white" /> */}
-          <div className="flex">
-            <div
-              className="w-10 h-10 rounded-full bg-cover border border-second"
-              style={{ backgroundImage: "url('/images/avatar-1.jpg')" }}
-            ></div>
-            <div className="flex text-white flex-col ml-2 justify-center">
-              <div className="text-xs ">Hallo👏</div>
-              <div className="text-sm  font-bold">{user.user.name}</div>
-            </div>
-          </div>
+          {user ? (
+            <>
+              <div className="flex">
+                <div
+                  className="w-10 h-10 rounded-full bg-cover border border-second"
+                  style={{
+                    backgroundImage: `url('https://avatar.iran.liara.run/public/boy?username=${user.user.name}')`,
+                  }}
+                ></div>
+                <div className="flex text-white flex-col ml-2 justify-center">
+                  <div className="text-xs ">Hallo👏</div>
+                  <div className="text-sm  font-bold">{user.user.name}</div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div
+                className="flex flex-row text-white gap-2 items-center cursor-pointer"
+                onClick={() => {
+                  navigate("/auth");
+                }}
+              >
+                <TbLogin2 className="text-xl" />
+                <div className="text-xl font-bold">Login</div>
+              </div>
+            </>
+          )}
         </NavLeft>
-        <NavRight className="pr-3 !text-white">
-          <TbBell
-            className="text-xl"
-            onClick={() => {
-              logOut();
-            }}
-          />
+        <NavRight className="pr-3 ">
+          <Button className="!text-white" panelOpen="#panel-nested">
+            <TbBell className="text-2xl" />
+          </Button>
         </NavRight>
       </Navbar>
+
+      <Panel right cover containerEl="#panel-page" id="panel-nested">
+        <Page>
+          <Block>Tidak Ada Notifikasi!</Block>
+        </Page>
+      </Panel>
       <div className="h-52   px-3">
         <div className="w-full h-full flex justify-center relative items-center overflow-hidden">
           <ShalatCard kota={location} />
         </div>
       </div>
-      <div className="w-full dark:bg-teal-950 bg-white mt-2 rounded-t-2xl ">
-        <MenuHome kota={location} />
+      <div className="w-full  dark:bg-teal-950 bg-white mt-2 rounded-t-2xl ">
+        <MenuHome kota={location || 1111} />
         <div className="p-1 !bg-slate-100 my-2"></div>
 
         {infoApp ? <InfoGraph banner={infoApp} /> : <SkeletonBanner />}

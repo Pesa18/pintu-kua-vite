@@ -12,6 +12,11 @@ import { useNavigate } from "react-router-dom";
 import { checkEmail } from "../Auth/LoginFetch";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
 import axios from "axios";
+import {
+  GoogleLogin,
+  GoogleOAuthProvider,
+  useGoogleLogin,
+} from "@react-oauth/google";
 
 const FormLogin = () => {
   const LogIn = useSignIn();
@@ -39,7 +44,7 @@ const FormLogin = () => {
           token: value.data.token,
           type: "Bearer",
         },
-        refresh: value.data.token,
+        refresh: value.data.refreshToken,
         userState: value.data,
       });
 
@@ -92,7 +97,7 @@ const FormLogin = () => {
                 token: response.data.data.token,
                 type: "Bearer",
               },
-              refresh: response.data.data.token,
+              refresh: response.data.data.refreshToken,
               userState: response.data.data,
             });
 
@@ -131,20 +136,7 @@ const FormLogin = () => {
     },
   });
 
-  useEffect(() => {
-    try {
-      window.google.accounts.id.initialize({
-        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-        callback: handleCallback,
-      });
-      window.google.accounts.id.renderButton(
-        document.getElementById("signinDiv"),
-        { theme: "outline", size: "large" }
-      );
-    } catch (error) {
-      console.error("Error initializing Google Sign-In:", error);
-    }
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <>
@@ -170,7 +162,7 @@ const FormLogin = () => {
                   type="email"
                   name="email"
                   id="email"
-                  className="  border-[2px] focus:ring-primary border-light invalid:focus:border-pink-800  dark:text-light bg-light bg-opacity-10 w-full text-third placeholder:text-light -ml-10 -mr-10  pl-10 pr-3 py-2 rounded-lg outline-none  focus:border-primary placeholder:text-sm "
+                  className="  !border-[2px] focus:!ring-primary !border-light invalid:focus:!border-pink-800  dark:!text-light !bg-light !bg-opacity-10 !w-full !text-third placeholder:!text-light !-ml-10 !-mr-10  !pl-10 !pr-3 !py-2 !rounded-lg !outline-none  focus:!border-primary placeholder:!text-sm"
                   placeholder="Masukkan alamat email"
                 />
                 {isLogin && (
@@ -230,8 +222,13 @@ const FormLogin = () => {
             </div>
             <div className="h-[1px] rounded-xl w-1/2 bg-gray-300"></div>
           </div>
-
-          <div id="signinDiv" className="mt-3"></div>
+          <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                handleCallback(credentialResponse);
+              }}
+            ></GoogleLogin>
+          </GoogleOAuthProvider>
 
           <div className="text-[10px] px-8 text-center mt-3 dark:text-light text-third">
             Dengan login kamu menyetujui{" "}
@@ -251,7 +248,7 @@ const FormLogin = () => {
             <span
               className="ml-1 font-extrabold flex justify-center items-center text-primary cursor-pointer "
               onClick={() => {
-                history("home");
+                history("/");
               }}
             >
               Lewati

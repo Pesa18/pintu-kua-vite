@@ -1,5 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
+import refresh from "./RefreshToken";
 export const googleSign = async (token) => {
   try {
     const response = await axios.post(
@@ -35,6 +36,7 @@ export const googleSign = async (token) => {
         login: true,
         token: response.data.data.token,
         user: response.data.data.user,
+        refreshToken: response.data.data.refreshToken,
       },
     };
     return responseData;

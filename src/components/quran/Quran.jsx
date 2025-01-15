@@ -13,35 +13,40 @@ import {
   NavTitle,
 } from "framework7-react";
 import QuranJson from "../../helper/jsonQuran";
-import { TbChevronLeft } from "react-icons/tb";
+import { TbChevronLeft, TbSettings } from "react-icons/tb";
 import { useState, useEffect } from "react";
 import ConvertToArabicNumbers from "../../helper/numberToarabic";
 const QuranPage = (props) => {
   const [surahData, setSurahData] = useState(null);
-
+  const [limit, setLimit] = useState(10);
+  const loadMore = () => {
+    setLimit(limit + 10);
+  };
   useEffect(() => {
     const fetchQuranData = async () => {
-      const data = await QuranJson();
+      const { data } = await QuranJson({ limit: limit, offset: 0 });
       setSurahData(data);
     };
 
     fetchQuranData();
-  }, []);
+  }, [limit]);
 
   return (
-    <Page name="quran">
-      <Navbar>
+    <Page name="quran" onInfinite={loadMore} infinite>
+      <Navbar innerClass="!bg-second" className="!bg-second" textColor="white">
         {" "}
         <NavLeft>
           <Link back>
-            <TbChevronLeft className="text-2xl font-bold" />
+            <TbChevronLeft className="text-2xl text-white font-bold" />
           </Link>
         </NavLeft>
         <NavTitle>
           <div className="text-md">Al-Qur'an</div>
         </NavTitle>
-        <NavRight>sdc</NavRight>
-        <Subnavbar inner={false}>
+        <NavRight>
+          <TbSettings className="text-2xl"></TbSettings>
+        </NavRight>
+        <Subnavbar inner={false} className="!bg-second rounded-b-3xl">
           <Searchbar
             placeholder="Cari Surat"
             searchIn=".item-title"

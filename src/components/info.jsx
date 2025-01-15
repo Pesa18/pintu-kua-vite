@@ -13,7 +13,6 @@ import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 import { MdArrowForwardIos } from "react-icons/md";
 
 export const InfoGraph = ({ banner }) => {
-  console.log({ banner });
   const pagination = {
     clickable: true,
     renderBullet: function (index, className) {

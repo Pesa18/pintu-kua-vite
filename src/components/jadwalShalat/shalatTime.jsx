@@ -12,6 +12,7 @@ import {
 } from "framework7-react";
 import { useEffect, useState } from "react";
 import moment from "moment";
+import * as momentHijri from "moment-hijri";
 import {
   WiCelsius,
   WiCloudy,
@@ -35,8 +36,9 @@ import {
   TbInfoCircle,
 } from "react-icons/tb";
 import CountDownShalat from "./countdownShalat";
+import { toast } from "react-toastify";
 
-const JadwalShalat = ({ kota }) => {
+const JadwalShalat = ({ kota = 1001 }) => {
   const alertInfo = () => {
     f7.dialog.alert(
       "Waktu shalat pada aplikasi ini hanya membantu. Untuk mastikan akurasi waktu, silahkan cek perhitungan jadwal shalat di daerah masing-masing"
@@ -47,11 +49,9 @@ const JadwalShalat = ({ kota }) => {
   const [jadwal, setJadwal] = useState(null);
   const datePlus = () => {
     setCurrentDate(moment(currentDate).add(1, "days").format("YYYY-MM-DD"));
-    console.log(currentDate);
   };
   const dateMin = () => {
     setCurrentDate(moment(currentDate).add(-1, "days").format("YYYY-MM-DD"));
-    console.log(currentDate);
   };
 
   const fetchJadwalShalat = async () => {
@@ -60,9 +60,10 @@ const JadwalShalat = ({ kota }) => {
         `https://api.myquran.com/v2/sholat/jadwal/${kota.id}/${currentDate}`
       );
 
-      console.log(response.data);
       setJadwal(response.data.data.jadwal);
-    } catch (error) {}
+    } catch (error) {
+      toast.error("Ada Kesalahan");
+    }
   };
 
   useEffect(() => {
@@ -143,7 +144,14 @@ const JadwalShalat = ({ kota }) => {
       <div className=" h-full rounded-t-2xl  bg-white shadow-inner px-4 py-8 relative drop-shadow-lg">
         <div className="flex flex-row justify-between items-center w-3/4 absolute gap-10 p-3 border  bg-white -top-5 rounded-lg  -translate-x-1/2 left-1/2">
           <TbChevronLeft className="text-xl cursor-pointer" onClick={dateMin} />
-          <div>{moment(currentDate).locale("id").format("DD MMMM YYYY")}</div>
+          <div className=" flex flex-col">
+            <div>{moment(currentDate).locale("id").format("DD MMMM YYYY")}</div>
+            <div className="font-lateef text-xl flex gap-2">
+              <span>{momentHijri(currentDate).format("iD")}</span>
+              <span>{momentHijri(currentDate).format("iMMMM")}</span>
+              <span>{momentHijri(currentDate).format("iYYYY")}</span>
+            </div>
+          </div>
           <TbChevronRight
             className="text-xl cursor-pointer"
             onClick={datePlus}

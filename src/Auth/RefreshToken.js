@@ -5,15 +5,19 @@ const refresh = createRefresh({
   interval: 10,
   refreshApiCallback: async (param) => {
     try {
-      const response = await axios.post("/refresh", param, {
-        headers: { Authorization: `Bearer ${param.authToken}` },
-      });
-      console.log("Refreshing");
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/refreshtoken`,
+        param,
+        {
+          headers: { Authorization: `Bearer ${param.refreshToken}` },
+        }
+      );
+      console.log(response.data.accessToken);
       return {
         isSuccess: true,
-        newAuthToken: response.data.token,
-        newAuthTokenExpireIn: 10,
-        newRefreshTokenExpiresIn: 10,
+        newAuthToken: response.data.accessToken,
+        newAuthTokenExpireIn: 100,
+        newRefreshTokenExpiresIn: 120,
       };
     } catch (error) {
       console.error(error);

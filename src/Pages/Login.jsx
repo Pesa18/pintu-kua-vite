@@ -12,6 +12,7 @@ const Login = (props) => {
     setDarkMode(!darkMode);
     setItem("darkMode", !darkMode);
   };
+
   useEffect(() => {
     const darkModeLs = getItem("darkMode");
     if (darkModeLs === null) {
