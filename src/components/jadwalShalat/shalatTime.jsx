@@ -12,7 +12,7 @@ import {
 } from "framework7-react";
 import { useEffect, useState } from "react";
 import moment from "moment";
-import * as momentHijri from "moment-hijri";
+import momentHijri from "moment-hijri";
 import {
   WiCelsius,
   WiCloudy,
@@ -101,15 +101,7 @@ const JadwalShalat = ({ kota = 1001 }) => {
         transparent
         textColor="white"
         colorTheme="white"
-        onNavbarTransparentShow={() => {
-          var bgNav = document.getElementsByClassName("navbar-bg");
-          for (var i = 0; i < bgNav.length; i++) {
-            bgNav[i].setAttribute(
-              "style",
-              "background-color: #38a3a5 !important;"
-            );
-          }
-        }}
+        innerClass="bg-primary"
       >
         <NavLeft>
           <div className="flex flex-row items-center">

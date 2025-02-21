@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import "./assets/css/app.css";
 import Login from "./Pages/Login";
-import { redirect, useNavigate } from "react-router";
 import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
+import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
+  let navigate = useNavigate();
   const isAuthenticated = useIsAuthenticated();
-  const navigate = useNavigate();
   const isDarkMode = () => {
     if (
       window.matchMedia &&
@@ -19,6 +19,8 @@ const Auth = () => {
   };
   useEffect(() => {
     if (isAuthenticated) {
+      console.log("dev");
+
       navigate("/");
     }
   }, []);

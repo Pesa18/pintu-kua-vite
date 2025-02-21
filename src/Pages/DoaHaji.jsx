@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Page, Navbar, List, ListItem } from "framework7-react";
+import { Page, Navbar, List, ListItem, NavLeft, Link } from "framework7-react";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
+import { TbChevronLeft } from "react-icons/tb";
 
 const DoaHaji = (props) => {
-  const { url } = props;
+  const { url, title } = props;
 
   const [data, setData] = useState([]);
   const getData = async (url) => {
@@ -29,10 +30,24 @@ const DoaHaji = (props) => {
     <>
       <ToastContainer />
       <Page>
-        <Navbar title="Haji List" backLink />
+        <Navbar innerClass="!bg-second !text-white">
+          <NavLeft>
+            <div className="flex flex-row items-center">
+              <Link back color="white">
+                <TbChevronLeft className="text-2xl" />
+              </Link>
+
+              <span className="font-bold text-xl">{title}</span>
+            </div>
+          </NavLeft>
+        </Navbar>
         <List>
           {data.map((item) => (
-            <ListItem link={`/haji/${item.id}`} className="border-b">
+            <ListItem
+              link={`/doa-haji-list`}
+              routeProps={{ id: item.id, title: item.name }}
+              className="border-b"
+            >
               <div>{item.name}</div>
               <img slot="media" src="/icons/quran.png" width="30" />
             </ListItem>

@@ -11,17 +11,48 @@ import {
   ListItem,
   Subnavbar,
   Searchbar,
+  NavLeft,
+  Link,
 } from "framework7-react";
 import { useEffect, useState } from "react";
-import { TbCurrentLocation } from "react-icons/tb";
+import { TbChevronLeft, TbCurrentLocation } from "react-icons/tb";
+import { toast } from "react-toastify";
 
 const Masjid = () => {
   const [dataMasjid, setDataMasjid] = useState([]);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
   const loadMore = () => {
     setPage(page + 1);
+  };
+
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      console.log("Geolocation is supported!");
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          setLatitude(latitude);
+          setLongitude(longitude);
+          setDataMasjid([]);
+        },
+        (error) => {
+          alert("error");
+          console.error("Error getting location:", error.message);
+        },
+        {
+          enableHighAccuracy: true, // Pastikan mendapatkan lokasi terbaru
+          timeout: 10000, // Maksimal 10 detik untuk mendapatkan lokasi
+          maximumAge: 0, // Hindari menggunakan cache
+        }
+      );
+    } else {
+      toast.error("Geolocation is not supported by this browser");
+    }
   };
   const searchMasjid = ({ target }) => {
     let searchValue = target.value;
@@ -33,7 +64,7 @@ const Masjid = () => {
   const getMasjidData = async () => {
     try {
       const response = await axios.get(
-        `https://pusaka.kemenag.go.id/api/v1/public/masjid?rows=12&search=${search}&page=${page}&provinsi_id=&kabupaten_id=`,
+        `https://pusaka.kemenag.go.id/api/v1/public/masjid?rows=12&search=${search}&page=${page}&provinsi_id=&kabupaten_id=&latitude=${latitude}&longitude=${longitude}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -54,24 +85,35 @@ const Masjid = () => {
         }
         return [...prevData, ...newData];
       }); // Gabungkan data lama dengan data baru
-    } catch (error) {}
+    } catch (error) {
+      toast.error("Terjadi Kesalahan");
+    }
   };
 
   useEffect(() => {
     getMasjidData();
-  }, [page, search]);
+  }, [page, search, latitude, longitude]);
   return (
     <Page name="masjid" onInfinite={loadMore} infinite>
-      <Navbar backLink title="Masjid">
+      <Navbar innerClass="!bg-second !text-white">
+        <NavLeft>
+          <div className="flex flex-row items-center">
+            <Link back color="white">
+              <TbChevronLeft className="text-2xl" />
+            </Link>
+
+            <span className="font-bold text-xl">Masjid</span>
+          </div>
+        </NavLeft>
         <NavRight>
-          <Button fill>
+          <Button color="white" fill onClick={getLocation}>
             <div className="flex flex-row justify-center items-center gap-2">
               <TbCurrentLocation />
-              <div>Terdekat</div>
+              <div className="text-third">Terdekat</div>
             </div>
           </Button>
         </NavRight>
-        <Subnavbar>
+        <Subnavbar className="!bg-second">
           <Searchbar
             onInput={searchMasjid}
             placeholder="Isi Minimal 3 Huruf"
@@ -84,7 +126,8 @@ const Masjid = () => {
             <ListItem
               id={item.id}
               key={index}
-              link="/user"
+              link="/DetailMasjid"
+              routeProps={item}
               title={item.nama_masjid}
               after="Lihat"
               subtitle={item.tipe}

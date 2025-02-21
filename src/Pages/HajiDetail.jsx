@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Page, Navbar, BlockTitle, Block } from "framework7-react";
+import {
+  Page,
+  Navbar,
+  BlockTitle,
+  Block,
+  Link,
+  NavLeft,
+} from "framework7-react";
 import { ToastContainer, toast } from "react-toastify";
-import { use } from "react";
 import axios from "axios";
+import { TbChevronLeft } from "react-icons/tb";
 
 const HajiDetail = (props) => {
   const createMarkup = (html) => {
     return { __html: html };
   };
-  const { id } = props;
+  const { id, title } = props;
   const [data, setData] = useState([]);
   const getDetail = async (id) => {
     try {
@@ -27,7 +34,17 @@ const HajiDetail = (props) => {
   }, []);
   return (
     <Page>
-      <Navbar title="Haji Detail" backLink="Back" />
+      <Navbar innerClass="!bg-second !text-white">
+        <NavLeft>
+          <div className="flex flex-row items-center">
+            <Link back color="white">
+              <TbChevronLeft className="text-2xl" />
+            </Link>
+
+            <span className="font-bold text-xl">{title}</span>
+          </div>
+        </NavLeft>
+      </Navbar>
       <ToastContainer />
       <div
         className="m-4"

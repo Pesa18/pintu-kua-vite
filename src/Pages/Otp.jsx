@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 export default function OtpPages() {
   const [resend, setResend] = useState(false);
   const params = useParams();
+
   const location = useLocation();
   const [expireOtp, setExpireOtp] = useState(new Date().getTime() + 120000);
   const state = location.state;
@@ -49,11 +50,11 @@ export default function OtpPages() {
         }
 
         setResend(false);
-        // if (location.state.mode === "forgot-password") {
-        //   return navigate(`/auth/forgot-password/${params}`, {
-        //     state: { token: location.state.token },
-        //   });
-        // }
+        if (location.state.mode === "forgot-password") {
+          return navigate(`/auth/forgot-password/${params.uuid}`, {
+            state: { token: location.state.token },
+          });
+        }
         return navigate("/auth");
       } catch (error) {
         setResend(false);

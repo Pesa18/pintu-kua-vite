@@ -11,6 +11,7 @@ import {
   PageContent,
   Button,
   Panel,
+  Link,
 } from "framework7-react";
 import { TbBell, TbLogin2 } from "react-icons/tb";
 import { ShalatCard } from "../components/shalatCard";
@@ -61,6 +62,8 @@ const HomePage = ({ f7router }) => {
 
   const getLocation = () => {
     if (navigator.geolocation) {
+      console.log("Geolocation is supported!");
+
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const latitude = position.coords.latitude;
@@ -70,6 +73,11 @@ const HomePage = ({ f7router }) => {
         (error) => {
           alert("error");
           console.error("Error getting location:", error.message);
+        },
+        {
+          enableHighAccuracy: true, // Pastikan mendapatkan lokasi terbaru
+          timeout: 10000, // Maksimal 10 detik untuk mendapatkan lokasi
+          maximumAge: 0, // Hindari menggunakan cache
         }
       );
     } else {
@@ -131,7 +139,7 @@ const HomePage = ({ f7router }) => {
       >
         <NavLeft className="pl-3">
           {user ? (
-            <>
+            <Link href="/user">
               <div className="flex">
                 <div
                   className="w-10 h-10 rounded-full bg-cover border border-second"
@@ -144,7 +152,7 @@ const HomePage = ({ f7router }) => {
                   <div className="text-sm  font-bold">{user.user.name}</div>
                 </div>
               </div>
-            </>
+            </Link>
           ) : (
             <>
               <div
@@ -160,13 +168,13 @@ const HomePage = ({ f7router }) => {
           )}
         </NavLeft>
         <NavRight className="pr-3 ">
-          <Button className="!text-white" panelOpen="#panel-nested">
+          <Button className="!text-white" panelOpen="right">
             <TbBell className="text-2xl" />
           </Button>
         </NavRight>
       </Navbar>
 
-      <Panel right cover containerEl="#panel-page" id="panel-nested">
+      <Panel right containerEl="#panel-page" id="panel-nested">
         <Page>
           <Block>Tidak Ada Notifikasi!</Block>
         </Page>

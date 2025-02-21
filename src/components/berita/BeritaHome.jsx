@@ -41,7 +41,6 @@ const HeadlineNews = ({ dataApp }) => {
               href={`/berita/${item.slug}`}
               className="w-full h-full mt-10"
               routeProps={item}
-              external
             >
               <Card
                 color="white"
@@ -60,12 +59,12 @@ const HeadlineNews = ({ dataApp }) => {
                     {item.categories.name}
                   </div>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="!p-2">
                   <div className="text-[10px] font-extralight">
                     {moment(item.published_at).format("D MMMM YYYY")}
                   </div>
                   <div className="line-clamp-1">{item.title}</div>
-                  <div className="font-extralight text-xs line-clamp-2">
+                  <div className="font-extralight text-[10px] line-clamp-2">
                     {item.description}
                   </div>
                 </CardContent>

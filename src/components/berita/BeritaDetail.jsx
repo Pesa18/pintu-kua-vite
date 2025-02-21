@@ -42,17 +42,17 @@ export const DetailBerita = (props) => {
           },
         }
       );
-      console.log(response.status);
 
       setArticleDetail(response.data.article);
     } catch (error) {
-      if (error.response && error.response.status === 404) {
-        return navigate("/404");
-      }
+      // if (error.response && error.response.status === 404) {
+      //   return navigate("/404");
+      // }
       toast.error("Error");
     }
   };
   useEffect(() => {
+    window.history.pushState({}, "", `/${slug}`);
     addViews();
   }, []);
 
@@ -86,7 +86,6 @@ export const DetailBerita = (props) => {
   return (
     <>
       <Helmet>
-        <title>{articleDetail?.title || "Detail Berita"}</title>
         <meta
           name="description"
           content={articleDetail?.description || "Deskripsi artikel"}
@@ -123,14 +122,31 @@ export const DetailBerita = (props) => {
         />
       </Helmet>
       <Page name="detail-berita">
-        <Navbar transparent textColor="white" color="white">
+        <Navbar
+          transparent
+          onNavbarTransparentShow={() => {
+            var bgNav = document.getElementsByClassName("navbar-bg");
+            for (var i = 0; i < bgNav.length; i++) {
+              bgNav[i].setAttribute(
+                "style",
+                "background-color: #38a3a5 !important;"
+              );
+            }
+          }}
+        >
           <NavLeft className="!m-0 !p-0">
-            <Link href="/" external>
-              <TbChevronLeft className=" text-3xl" />
+            <Link
+              onClick={() => {
+                window.history.pushState({}, "", "/");
+                f7.views.main.router.back();
+              }}
+              className="m-0 p-0"
+            >
+              <TbChevronLeft className=" text-white text-3xl" />
             </Link>
           </NavLeft>
         </Navbar>
-        <Fab color="blue" position="right-bottom">
+        <Fab color="red" position="right-bottom">
           <TbShare2 className="text-xl font-bold"></TbShare2>
           <FabButtons position="top">
             <FabButton onClick={copyToClipboard}>

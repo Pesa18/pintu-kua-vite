@@ -38,8 +38,6 @@ function App() {
           }
         />
         <Route path="/" element={<HomeView />}></Route>
-        <Route path="/404" element={<NotFoundPage />}></Route>
-        <Route path="/berita/:slug" element={<HomeView />}></Route>
         <Route path="/auth" element={<Auth />}>
           <Route index element={<FormLogin />}></Route>
           <Route

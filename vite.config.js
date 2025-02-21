@@ -5,11 +5,15 @@ import { VitePWA } from "vite-plugin-pwa";
 export default defineConfig({
   server: {
     host: "0.0.0.0",
+    allowedHosts: ["mobile.pintukua.site"],
   },
   base: "./",
   plugins: [
     react(),
     VitePWA({
+      workbox: {
+        maximumFileSizeToCacheInBytes: 4000000, // Naikkan limit ke 4MB
+      },
       registerType: "prompt",
       includeAssets: ["favicon.ico", "apple-touch-icon.png"],
       manifest: {

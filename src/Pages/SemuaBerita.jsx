@@ -8,6 +8,7 @@ import {
   List,
   ListItem,
   Navbar,
+  NavLeft,
   Page,
 } from "framework7-react";
 import { useEffect, useState } from "react";
@@ -17,6 +18,7 @@ import "swiper/css/pagination";
 import "../assets/css/pagination-bullet.css";
 import { Pagination } from "swiper/modules";
 import moment from "moment";
+import { TbChevronLeft } from "react-icons/tb";
 const SemuaBerita = () => {
   const [semuaBerita, setSemuaBerita] = useState([]);
   const [beritaTrending, setBeritaTrending] = useState([]);
@@ -100,9 +102,21 @@ const SemuaBerita = () => {
     setCurrentPage((prevPage) => prevPage + 1);
   };
   return (
-    <Page name="semua-berita">
-      <Navbar backLink title="Berita & Artikel" transparent></Navbar>
-      <div className="mx-5 mb-4">Trending</div>
+    <Page name="semua-berita" className="">
+      <Navbar innerClass="!bg-second !text-white">
+        <NavLeft>
+          <div className="flex flex-row items-center">
+            <Link back color="white">
+              <TbChevronLeft className="text-2xl" />
+            </Link>
+
+            <span className="font-bold text-xl">Semua Berita</span>
+          </div>
+        </NavLeft>
+      </Navbar>
+      <div className="  font-semibold mx-4 mb-5 mt-4 ">
+        <span className=" bg-greenday p-0.5 mr-1"></span>Trending
+      </div>
       <Swiper
         className="overflow-hidden rounded-lg !mx-5 h-64 "
         pagination={pagination}
@@ -115,7 +129,6 @@ const SemuaBerita = () => {
                 href={`/berita/${item.slug}`}
                 routeProps={item}
                 className="h-full w-full"
-                external
               >
                 <Card className="h-full w-full !m-0" padding={false}>
                   <CardContent padding={false} className="h-full w-full">
@@ -148,7 +161,9 @@ const SemuaBerita = () => {
           <></>
         )}
       </Swiper>
-      <div className="mx-5 my-4"> Berita Terbaru</div>
+      <div className="  font-semibold mx-4 mb-5 mt-5 ">
+        <span className=" bg-greenday p-0.5 mr-1"></span>Terbaru
+      </div>
       {semuaBerita ? (
         semuaBerita.map((item) => (
           <List mediaList className="px-2 !m-2" key={item.uuid}>
@@ -157,7 +172,6 @@ const SemuaBerita = () => {
               href={`/berita/${item.slug}`}
               routeProps={item}
               noChevron
-              external
             >
               <img
                 src={import.meta.env.VITE_APP_FILE + item.image}

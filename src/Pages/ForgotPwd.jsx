@@ -36,7 +36,7 @@ const LupaPassword = () => {
 
       try {
         const response = await axios.post(
-          `${import.meta.env.VITE_API_URL}/send-password`,
+          `${import.meta.env.VITE_API_URL}/auth/new-password`,
           {
             values,
           },
@@ -48,7 +48,7 @@ const LupaPassword = () => {
             },
           }
         );
-        if (response.data.success) {
+        if (response.status === 200) {
           setOnVerification(false);
           return navigate("/auth");
         }

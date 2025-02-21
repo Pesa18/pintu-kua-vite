@@ -1,14 +1,35 @@
-import { Page, Navbar, BlockTitle, Block, Card, Link } from "framework7-react";
+import {
+  Page,
+  Navbar,
+  BlockTitle,
+  Block,
+  Card,
+  Link,
+  NavLeft,
+  NavTitle,
+} from "framework7-react";
+import { TbChevronLeft } from "react-icons/tb";
 
 const HajjMenu = () => {
   return (
     <Page>
-      <Navbar title="Haji & Umroh" backLink="Back" />
+      <Navbar innerClass="!bg-second !text-white">
+        <NavLeft>
+          <div className="flex flex-row items-center">
+            <Link back color="white">
+              <TbChevronLeft className="text-2xl" />
+            </Link>
+
+            <span className="font-bold text-xl">Haji & Umroh</span>
+          </div>
+        </NavLeft>
+      </Navbar>
       <div className="grid grid-cols-2 gap-2 gap-y-4 p-2">
         <Link
           href="/hajilist"
           routeProps={{
             url: "https://kontenpusaka.kemenag.go.id/api/haji?category=perjalanan-ibadah&limit=100",
+            title: "Perjalanan Ibadah Haji & Umroh",
           }}
         >
           <Card className="!bg-white !m-0 !p-0 !shadow-lg w-full">
@@ -28,6 +49,7 @@ const HajjMenu = () => {
           href="/hajilist"
           routeProps={{
             url: "https://kontenpusaka.kemenag.go.id/api/haji?category=manasik&limit=100",
+            title: "Manasik Haji & Umroh",
           }}
         >
           <Card className="!bg-white !m-0 !p-0 !shadow-lg w-full">
@@ -43,6 +65,7 @@ const HajjMenu = () => {
           href="/hajilist"
           routeProps={{
             url: "https://kontenpusaka.kemenag.go.id/api/haji?category=pelaksanaan&limit=100",
+            title: "Pelaksanaan Haji & Umroh",
           }}
         >
           <Card className="!bg-white !m-0 !p-0 !shadow-lg w-full">
@@ -62,6 +85,7 @@ const HajjMenu = () => {
           href="/hajilist"
           routeProps={{
             url: "https://kontenpusaka.kemenag.go.id/api/haji?category=hikmah&limit=100",
+            title: "Hikmah Ibadah Haji & Umroh",
           }}
         >
           <Card className="!bg-white !m-0 !p-0 !shadow-lg w-full">
@@ -81,6 +105,7 @@ const HajjMenu = () => {
           href="/doahaji"
           routeProps={{
             url: "https://kontenpusaka.kemenag.go.id/api/doa/haji?&limit=100&page=1",
+            title: "Doa-doa Haji & Umroh",
           }}
         >
           <Card className="!bg-white !m-0 !p-0 !shadow-lg w-full">
@@ -96,6 +121,7 @@ const HajjMenu = () => {
           href="/ziarahhaji"
           routeProps={{
             url: "https://kontenpusaka.kemenag.go.id/api/ziarah",
+            title: "Destinasi Ziarah di Tanah Suci",
           }}
         >
           <Card className="!bg-white !m-0 !p-0 !shadow-lg w-full">
@@ -111,6 +137,7 @@ const HajjMenu = () => {
           href="/hajilist"
           routeProps={{
             url: "https://kontenpusaka.kemenag.go.id/api/haji?category=kemudahan-lansia&limit=100",
+            title: "Kemudahan Haji Bagi Lansia & Risti",
           }}
         >
           <Card className="!bg-white !m-0 !p-0 !shadow-lg w-full">

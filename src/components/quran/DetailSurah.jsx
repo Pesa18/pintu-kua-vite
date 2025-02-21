@@ -18,6 +18,7 @@ import {
   TbPlayerPauseFilled,
   TbPlayerPlayFilled,
   TbPlayerStopFilled,
+  TbChevronLeft,
   TbSettings,
 } from "react-icons/tb";
 import ReactAudioPlayer from "react-audio-player";
@@ -72,12 +73,16 @@ const DetailSurah = (props) => {
   };
   return (
     <Page name="detail-surah">
-      <Navbar
-        backLink
-        title={props.name_latin}
-        innerClass="!bg-second !text-white"
-        textColor="white"
-      >
+      <Navbar innerClass="!bg-second !text-white" textColor="white">
+        <NavLeft>
+          <div className="flex flex-row items-center">
+            <Link back color="white">
+              <TbChevronLeft className="text-2xl" />
+            </Link>
+
+            <span className="font-bold text-xl">{props.name_latin}</span>
+          </div>
+        </NavLeft>
         <NavRight>
           <Link popoverOpen={".setting-popup"}>
             <TbSettings className="text-2xl text-white mr-3" />

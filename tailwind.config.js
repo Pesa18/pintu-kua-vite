@@ -1,5 +1,6 @@
+const flowbite = require("flowbite-react/tailwind");
 /** @type {import('tailwindcss').Config} */
-export const content = ["./src/**/*.{js,jsx,ts,tsx}"];
+export const content = ["./src/**/*.{js,jsx,ts,tsx}", flowbite.content()];
 export const theme = {
   extend: {
     fontFamily: {
@@ -23,4 +24,4 @@ export const theme = {
   },
 };
 export const darkMode = "class";
-export const plugins = [require("@tailwindcss/line-clamp")];
+export const plugins = [require("@tailwindcss/line-clamp"), flowbite.plugin()];

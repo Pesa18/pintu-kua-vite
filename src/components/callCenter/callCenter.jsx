@@ -92,8 +92,8 @@ export const ChatSupport = ({ f7route, f7router }) => {
     <Page name="konsultasi" onPageAfterIn={openChat}>
       {isAuthenticated ? (
         <TawkMessengerReact
-          propertyId="61efb8da9bd1f31184d930de"
-          widgetId="1fq86k63a"
+          propertyId="67ac24833a842732607dadde"
+          widgetId="1ijs6t93o"
           onLoad={onLoad}
           onChatMinimized={onChatMinimized}
           customStyle={customStyle}

@@ -36,16 +36,14 @@ const QuranPage = (props) => {
       <Navbar innerClass="!bg-second" className="!bg-second" textColor="white">
         {" "}
         <NavLeft>
-          <Link back>
-            <TbChevronLeft className="text-2xl text-white font-bold" />
-          </Link>
+          <div className="flex flex-row items-center">
+            <Link back color="white">
+              <TbChevronLeft className="text-2xl" />
+            </Link>
+
+            <span className="font-bold text-xl">Al-Qur'an</span>
+          </div>
         </NavLeft>
-        <NavTitle>
-          <div className="text-md">Al-Qur'an</div>
-        </NavTitle>
-        <NavRight>
-          <TbSettings className="text-2xl"></TbSettings>
-        </NavRight>
         <Subnavbar inner={false} className="!bg-second rounded-b-3xl">
           <Searchbar
             placeholder="Cari Surat"

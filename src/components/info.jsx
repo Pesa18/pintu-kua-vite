@@ -36,7 +36,7 @@ export const InfoGraph = ({ banner }) => {
         className=" !w-full  "
       >
         {banner.map((item) => (
-          <SwiperSlide className=" !w-[80%] !h-40" key={item.id}>
+          <SwiperSlide className=" !w-[80%] !h-44" key={item.id}>
             <img
               src={`${import.meta.env.VITE_APP_FILE + item.image_path}`}
               alt=""
@@ -44,7 +44,6 @@ export const InfoGraph = ({ banner }) => {
             />
           </SwiperSlide>
         ))}
-        ;
       </Swiper>
     </div>
   );
@@ -85,7 +84,14 @@ export const InfoKlik = () => {
         push
       >
         <div className="w-10 h-1.5 rounded-full mx-auto bg-slate-600 mt-0.5"></div>
-        <PageContent className="!h-72">asdd</PageContent>
+        <PageContent className="!h-72">
+          <div className="p-4">
+            <div>Ada Apa saja</div>
+            <Button fill href="/konsultasi" sheetClose>
+              Mulai Konsultasi
+            </Button>
+          </div>
+        </PageContent>
       </Sheet>
     </>
   );
