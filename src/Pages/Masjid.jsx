@@ -76,6 +76,7 @@ const Masjid = () => {
       );
 
       const newData = response.data.data.data; // Data baru dari API
+
       setDataMasjid((prevData) => {
         if (search) {
           return setDataMasjid(newData);
@@ -83,6 +84,7 @@ const Masjid = () => {
         if (dataMasjid.length === 0) {
           return setDataMasjid(newData);
         }
+
         return [...prevData, ...newData];
       }); // Gabungkan data lama dengan data baru
     } catch (error) {
