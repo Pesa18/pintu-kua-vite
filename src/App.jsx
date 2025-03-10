@@ -10,6 +10,7 @@ import LupaPassword from "./Pages/ForgotPwd";
 import NotFoundPage from "./Pages/404";
 import { MetaProvider, useMeta } from "./MetaContext";
 import { Helmet } from "react-helmet";
+import { ToastContainer } from "react-toastify";
 function App() {
   const { meta } = useMeta();
   return (

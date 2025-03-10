@@ -45,7 +45,6 @@ const HajiDetail = (props) => {
           </div>
         </NavLeft>
       </Navbar>
-      <ToastContainer />
       <div
         className="m-4"
         dangerouslySetInnerHTML={createMarkup(data.content)}

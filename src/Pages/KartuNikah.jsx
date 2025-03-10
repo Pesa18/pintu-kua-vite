@@ -112,7 +112,6 @@ const KartuNikah = () => {
 
   return (
     <>
-      <ToastContainer />
       <Page onPageAfterIn={cekAuth}>
         <Navbar innerClass="!bg-second !text-white">
           <NavLeft>

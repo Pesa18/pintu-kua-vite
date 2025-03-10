@@ -79,12 +79,11 @@ const Masjid = () => {
 
       setDataMasjid((prevData) => {
         if (search) {
-          return setDataMasjid(newData);
+          return [...newData];
         }
         if (dataMasjid.length === 0) {
-          return setDataMasjid(newData);
+          return [...newData];
         }
-
         return [...prevData, ...newData];
       }); // Gabungkan data lama dengan data baru
     } catch (error) {

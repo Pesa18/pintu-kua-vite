@@ -30,6 +30,7 @@ const routes = [
   {
     path: "/",
     component: HomePage,
+    keepAlive: false,
   },
   {
     path: "/konsultasi",

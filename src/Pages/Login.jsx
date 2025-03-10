@@ -24,6 +24,7 @@ const Login = (props) => {
 
   return (
     <>
+      <ToastContainer />
       <div
         className={`font-quicksand ${
           darkMode ? "dark" : "bg-slate-50"
@@ -81,8 +82,6 @@ const Login = (props) => {
           </div>
         </div>
       </div>
-
-      <ToastContainer />
     </>
   );
 };

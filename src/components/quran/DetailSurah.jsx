@@ -72,11 +72,11 @@ const DetailSurah = (props) => {
     setTextTranslation(e);
   };
   return (
-    <Page name="detail-surah">
+    <Page>
       <Navbar innerClass="!bg-second !text-white" textColor="white">
         <NavLeft>
           <div className="flex flex-row items-center">
-            <Link back color="white">
+            <Link back color="white" reloadAll reloadPrevious reloadCurrent>
               <TbChevronLeft className="text-2xl" />
             </Link>
 

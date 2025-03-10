@@ -227,12 +227,7 @@ const HitungZakat = (props) => {
     );
   }
 
-  return (
-    <Page>
-      <ToastContainer />
-      {renderComponent()}
-    </Page>
-  );
+  return <Page>{renderComponent()}</Page>;
 };
 
 export default HitungZakat;

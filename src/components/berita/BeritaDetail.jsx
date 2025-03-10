@@ -157,7 +157,6 @@ export const DetailBerita = (props) => {
             </FabButton>
           </FabButtons>
         </Fab>
-        <ToastContainer />
         <div className="absolute top-0 w-full">
           {articleDetail ? (
             <>

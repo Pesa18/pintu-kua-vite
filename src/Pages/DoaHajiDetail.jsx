@@ -38,7 +38,6 @@ const DoaHajiDetail = (props) => {
   }, []);
   return (
     <Page>
-      <ToastContainer />
       <Navbar innerClass="!bg-second !text-white">
         <NavLeft>
           <div className="flex flex-row items-center">

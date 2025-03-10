@@ -28,7 +28,6 @@ const DoaHaji = (props) => {
   }, []);
   return (
     <>
-      <ToastContainer />
       <Page>
         <Navbar innerClass="!bg-second !text-white">
           <NavLeft>

@@ -32,7 +32,7 @@ const QuranPage = (props) => {
   }, [limit]);
 
   return (
-    <Page name="quran" onInfinite={loadMore} infinite>
+    <Page onInfinite={loadMore} infinite>
       <Navbar innerClass="!bg-second" className="!bg-second" textColor="white">
         {" "}
         <NavLeft>
@@ -82,6 +82,7 @@ const QuranPage = (props) => {
                         }
                         link="/detail-surah"
                         routeProps={r}
+                        ignoreCache
                       >
                         <div
                           slot="media"

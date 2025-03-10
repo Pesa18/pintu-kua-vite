@@ -17,15 +17,23 @@ import { useState, useEffect } from "react";
 import "swiper/css/effect-flip";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import "swiper/css";
 import { EffectFlip, Pagination, Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 const pagination = {
   clickable: true,
   renderBullet: function (index, className) {
-    return `<span class="${className} !bg-white !opacity-100 !w-1.5 !h-1.5 !mx-0.5 " > </span>`;
+    return `<span class="${className}"><div class="w-full h-full bg-primary rounded-full"></div></span>`;
   },
 };
 export const MenuHome = (kota) => {
   const [activeTab, setActiveTab] = useState(0);
+  const [swiper, setSwiper] = useState(null);
+
+  const setActived = (index) => {
+    swiper.slideTo(index);
+    setActiveTab(index);
+  };
 
   return (
     <>
@@ -36,7 +44,7 @@ export const MenuHome = (kota) => {
             color="teal"
             active={activeTab === 0}
             onClick={() => {
-              setActiveTab(0);
+              setActived(0);
             }}
             tabLink={"#tab-1"}
           >
@@ -46,7 +54,7 @@ export const MenuHome = (kota) => {
             small
             active={activeTab === 1}
             onClick={() => {
-              setActiveTab(1);
+              setActived(1);
             }}
             tabLink={"#tab-2"}
             color="teal"
@@ -57,7 +65,7 @@ export const MenuHome = (kota) => {
             small
             active={activeTab === 2}
             onClick={() => {
-              setActiveTab(2);
+              setActived(2);
             }}
             color="teal"
             tabLink={"#tab-3"}
@@ -66,14 +74,15 @@ export const MenuHome = (kota) => {
           </Button>
         </Segmented>
 
-        <Tabs
-          swipeable
-          swiperParams={{
-            pagination: pagination,
-            modules: [Pagination, Navigation],
-          }}
+        <Swiper
+          modules={[Pagination]}
+          pagination={pagination}
+          slidesPerView={"auto"}
+          spaceBetween={10}
+          className=" !w-full !h-40  "
+          onSwiper={setSwiper}
         >
-          <Tab id={"tab-1"} tabActive={activeTab === 0}>
+          <SwiperSlide>
             <div className="grid grid-cols-4 gap-4  ">
               <Link
                 href="shalat"
@@ -99,7 +108,6 @@ export const MenuHome = (kota) => {
                 className="text-greenday h-full"
                 href="https://qiblafinder.withgoogle.com/"
                 external
-                force
               >
                 <div className="flex flex-col h-full justify-between items-center  text-center">
                   <FaRegCompass className="text-4xl bg-bluegreen rounded-xl p-1 mb-1" />
@@ -149,9 +157,9 @@ export const MenuHome = (kota) => {
                 </div>
               </Link>
             </div>
-          </Tab>
-          <Tab id={"tab-2"} tabActive={activeTab === 1}>
-            <div className="grid grid-cols-4 gap-4  ">
+          </SwiperSlide>
+          <SwiperSlide className="h-full active-slide">
+            <div className="grid grid-cols-4 gap-4   ">
               <Link className="text-greenday h-full">
                 <div className="flex flex-col  h-full justify-between items-center  text-center">
                   <CgRing className="text-4xl bg-bluegreen rounded-lg p-1 mb-1" />
@@ -185,16 +193,16 @@ export const MenuHome = (kota) => {
                 </div>
               </Link>
             </div>
-          </Tab>
-          <Tab id={"tab-3"} tabActive={activeTab === 2}>
+          </SwiperSlide>
+          <SwiperSlide>
             <div className="flex flex-col justify-center items-center gap-4">
               <img src="/images/hourglass.png" className="h-12 w-12 " alt="" />
               <div className="text-center">
                 Fitur ini masih dalam tahap pengembangan. Nantikan segera!🚀
               </div>
             </div>
-          </Tab>
-        </Tabs>
+          </SwiperSlide>
+        </Swiper>
       </div>
     </>
   );

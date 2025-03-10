@@ -105,7 +105,7 @@ const HomePage = ({ f7router }) => {
         setDataApp(response.data.data);
         setInfoApp(response.data.data.banner);
       } catch (error) {
-        toast.error("Ada Kesalahan");
+        toast.error("Terjadi Kesalahan Saat Mengambil Data");
       }
     };
     getLocation();
@@ -115,14 +115,16 @@ const HomePage = ({ f7router }) => {
 
   return (
     <Page
-      id="panel-page"
-      name="home"
       ptr
       onPtrRefresh={() => {
         f7.views.main.router.refreshPage();
       }}
       ptrMousewheel={true}
-      onPageInit={f7.preloader.showIn("<Nabar></Navbar>")}
+      onPageReinit={() => {
+        console.log("reinit");
+
+        f7.views.current.router.refreshPage();
+      }}
       className="!bg-primary"
     >
       <Navbar
@@ -174,11 +176,6 @@ const HomePage = ({ f7router }) => {
         </NavRight>
       </Navbar>
 
-      <Panel right containerEl="#panel-page" id="panel-nested">
-        <Page>
-          <Block>Tidak Ada Notifikasi!</Block>
-        </Page>
-      </Panel>
       <div className="h-52   px-3">
         <div className="w-full h-full flex justify-center relative items-center overflow-hidden">
           <ShalatCard kota={location} />
